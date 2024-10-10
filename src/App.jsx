@@ -117,17 +117,15 @@ const App = () => {
     <div>
       <NavBar balance={balance}/>
 
-      <section className='flex gap-10'>
+      <section className='flex gap-10 flex-col xsm:flex-row'>
         {/* FORM SECTION */}
-        <div className='w-[30%] h-[70vh] flex justify-center items-center '>
-
+        <div className='w-full h-[50vh] flex justify-center items-center xsm:h-[70vh] xsm:w-[30%]'>
           <Form setBetval={setBetval} setBombs={setBombs} handleCashOut={handleCashOut}
           balance={balance} betval={betval} bombs={bombs} betPlaced={betPlaced} handleSubmit={handleSubmit} />
-          
         </div>
         
         {/* //Card SECTION */}
-        <div className='max-w-[570px] mt-10 mx-auto bg-gray-800 px-5 py-5'>
+        <div className='max-w-[100vw] bg-gray-800 px-5 py-5 xsm:mt-10 mx-auto max-w-[142.5rem]'>
           <div className='grid grid-cols-5 gap-3'>
             {cards.map((card) => (
               <Card key={card.id}

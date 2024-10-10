@@ -2,7 +2,7 @@ import React from 'react'
 
 const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betPlaced, handleSubmit }) => {
   return (
-    <form onSubmit={handleSubmit} className='bg-gray-800 p-[1.75rem] rounded-lg shadow-lg flex flex-col items-start min-w-[19.5rem] ml-[230px]'>
+    <form onSubmit={handleSubmit} className='bg-gray-800  rounded-lg shadow-lg flex flex-col items-start min-w-[19.5rem]  xsm:ml-[230px] p-[1.75rem]'>
       <h1 className='text-white text-2xl font-bold mb-4 mx-auto'>MINES</h1>
 
       <label htmlFor="betValue" className='text-white mb-1'>Bet Amount : </label>
