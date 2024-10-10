@@ -14,7 +14,7 @@ const Card = ({ card, handleChoice, flipped }) => {
             <img
               src={card.src}
               alt="card-front"
-              className="block xsm:w-20 xsm:h-20 w-[1.5rem] mix-blend-color-burn object-contain"
+              className="block xsm:w-[3.75rem] w-[1.5rem] mix-blend-color-burn object-contain"
             />
           </div>
         </div>
