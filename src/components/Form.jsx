@@ -10,7 +10,6 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
         id="betValue"
         type="number"
         min={10}
-        max={100000}
         step={1}
         value={betval}
         onChange={(e) => setBetval(prev => prev === 0 ? prev + Number(e.target.value) : Number(e.target.value))}
