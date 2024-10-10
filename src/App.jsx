@@ -3,8 +3,8 @@ import './App.css';
 import Card from './components/Card';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import Form from './components/Form';
+import NavBar from './components/NavBar';
 
 const bombImage = { "src": "./assets/bomb.png", matched: false };
 const diamondImage = { "src": "./assets/diamond.png", matched: false };
@@ -49,6 +49,7 @@ const App = () => {
         notify()
         const sound = new Audio('./assets/bombs.mp3'); // Sound file ka path
           sound.play();
+          
         setTimeout(()=>{
           setChosen(null);
           setBetPlaced(false);
@@ -77,7 +78,7 @@ const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (betval > balance) {
-      alert("Not enough balance");
+      setBetval(parseInt(balance))
     } else {
       setBetPlaced(true);
       setBalance(balance - betval);
@@ -114,69 +115,17 @@ const App = () => {
 
   return (
     <div>
-      <nav className='w-full py-4 bg-gray-900 '>
-        <div className='flex w-[80%] mx-auto justify-between'>
-          <h1 className='text-white text-5xl font-bold ml-[-100px]'>@PK</h1>
-          <div className='text-4xl text-white font-bold'>
-            <span className='text-orange-300'>Balance :</span> ${balance}
-          </div>
-        </div>
-      </nav>
+      <NavBar balance={balance}/>
 
       <section className='flex gap-10'>
         {/* FORM SECTION */}
         <div className='w-[30%] h-[70vh] flex justify-center items-center '>
-          <form onSubmit={handleSubmit} className='bg-gray-800 p-[1.75rem] rounded-lg shadow-lg flex flex-col items-start min-w-[19.5rem] ml-[230px]'>
-            <h1 className='text-white text-2xl font-bold mb-4 mx-auto'>MINES</h1>
 
-            <label htmlFor="betValue" className='text-white mb-1'>Bet Amount : </label>
-            <input
-              id="betValue"
-              type="number"
-              min={10}
-              max={balance}
-              step={1}
-              value={betval}
-              onChange={(e) => setBetval(e.target.value)}
-              className='w-full px-4 py-2 mb-4 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-              placeholder='Enter Bet Value'
-              disabled={betPlaced}
-            />
-
-            {/* Label for Number of Mines */}
-            <label htmlFor="numMines" className='text-white mb-1'>Number of Mines : </label>
-            <input
-              id="numMines"
-              type="number"
-              min={1}
-              max={24}
-              value={bombs}
-              step={1}
-              onChange={(e) => setBombs(e.target.value)}
-              className='w-full px-4 py-2 mb-4 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-              placeholder='Enter no. of mines'
-              disabled={betPlaced}
-            />
-
-            {!betPlaced ? (
-              <button
-                type='submit'
-                className='w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition-colors mt-9'
-              >
-                Bet
-              </button>
-            ) : (
-              <button
-                type='button'
-                onClick={handleCashOut}
-                className='w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-colors mt-9'
-              >
-                Cash Out
-              </button>
-            )}
-          </form>
+          <Form setBetval={setBetval} setBombs={setBombs} handleCashOut={handleCashOut}
+          balance={balance} betval={betval} bombs={bombs} betPlaced={betPlaced} handleSubmit={handleSubmit} />
+          
         </div>
-
+        
         {/* //Card SECTION */}
         <div className='max-w-[570px] mt-10 mx-auto bg-gray-800 px-5 py-5'>
           <div className='grid grid-cols-5 gap-3'>
