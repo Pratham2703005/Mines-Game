@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
 // import './App.css';
 import Card from './components/Card';
-import { ToastContainer, toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Form from './components/Form';
 import NavBar from './components/NavBar';
 
 const bombImage = { "src": "./assets/bomb.png", matched: false };
 const diamondImage = { "src": "./assets/diamond.png", matched: false };
-
+const notyf = new Notyf({
+  position: {
+    x: 'center',
+    y: 'top',
+  },
+});
 const App = () => {
 
   const [balance, setBalance] = useState(1000);
@@ -45,8 +52,10 @@ const App = () => {
         let totalPrice = (turned) * increment;
         totalPrice *= parseInt(betval)
         totalPrice += parseInt(betval)
-        const notify = () => toast.error(`YOU LOST : $${parseFloat(totalPrice.toFixed(2))}`);
-        notify()
+
+        // const notify = () => toast.error(`YOU LOST : $${parseFloat(totalPrice.toFixed(2))}`);
+        // notify()
+        notyf.error(`YOU LOST : $${parseFloat(totalPrice.toFixed(2))}`)
         const sound = new Audio('./assets/bombs.mp3'); // Sound file ka path
           sound.play();
           
@@ -96,10 +105,11 @@ const App = () => {
 
     let totalPrice = turned * increment;
     totalPrice *= parseInt(betval)
-    const notify = () => {
-      toast.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`)
-    }
-    notify()
+    // const notify = () => {
+    //   toast.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`)
+    // }
+    // notify()
+    notyf.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`)
     totalPrice += parseInt(betval)
     
     setBalance((prevBalance) => {
@@ -136,7 +146,7 @@ const App = () => {
           </div>
         </div>
       </section>
-      <ToastContainer
+      {/* <ToastContainer
         position="top-center" 
         autoClose={3000}
         hideProgressBar={false}
@@ -147,7 +157,7 @@ const App = () => {
         draggable
         pauseOnHover
         theme="dark"
-        transition:Bounce />
+        transition:Bounce /> */}
     </div>
   );
 }
