@@ -140,7 +140,7 @@ const App = () => {
         setBalance(1000);
         localStorage.setItem('balance', 1000);
         Swal.fire({
-          title: "Refilled!",
+          title: "Done!",
           text: "Your balance has been refilled.",
           icon: "success"
         });
