@@ -28,6 +28,7 @@
     transition-delay: 0.2s;
 }
 
+
 .flipped .front {
     transition-delay: 0.2s;
     transform: rotateY(0deg);

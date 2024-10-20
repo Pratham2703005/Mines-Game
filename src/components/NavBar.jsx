@@ -1,16 +1,19 @@
 import React from 'react'
 
-const NavBar = ({balance}) => {
+const NavBar = ({ balance }) => {
   return (
-    <nav className='w-[100vw] py-4 bg-gray-900'>
-        <div className='flex w-[80%] mx-auto justify-between'>
-          <h1 className='text-white text-[2rem] font-bold ml-[-20px] xsm:text-5xl xsm:ml-[-100px]'>@PK</h1>
-          <div className='text-[1.5rem] text-white font-bold mt-1 xsm:text-4xl'>
-            <span className='text-orange-300'>Balance :</span> ${balance}
-          </div>
+    <nav className='w-full py-4 bg-NavBar flex justify-center shadow-lg'>
+      <div className='flex flex-row w-[80%] items-center justify-between'>
+        <h1 className='text-white text-3xl font-bold md:text-5xl'>
+          @PK
+        </h1>
+        <div className='flex items-center text-2xl text-white font-bold md:text-4xl'>
+          <p className='text-orange-300 mr-2'>Balance:</p>
+          <span className='text-green-400'>${balance}</span>
         </div>
-      </nav>
+      </div>
+    </nav>
   )
 }
 
-export default NavBar
+export default NavBar;

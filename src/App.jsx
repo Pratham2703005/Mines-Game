@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+// import './App.css';
 import Card from './components/Card';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -45,7 +45,7 @@ const App = () => {
         let totalPrice = (turned) * increment;
         totalPrice *= parseInt(betval)
         totalPrice += parseInt(betval)
-        const notify = () => toast.error(`YOU LOST : $${totalPrice}`);
+        const notify = () => toast.error(`YOU LOST : $${parseFloat(totalPrice.toFixed(2))}`);
         notify()
         const sound = new Audio('./assets/bombs.mp3'); // Sound file ka path
           sound.play();
@@ -81,10 +81,9 @@ const App = () => {
       setBetval(parseInt(balance))
     } else {
       setBetPlaced(true);
-      setBalance(balance - betval);
+      const tmp = balance - betval;
+      setBalance(parseFloat(tmp.toFixed(2)));
       setIncrement(parseFloat(bombs * 0.04));
-      console.log("increment : ", parseFloat(bombs * 0.04))
-      console.log(cards)
     }
   };
 
@@ -98,7 +97,7 @@ const App = () => {
     let totalPrice = turned * increment;
     totalPrice *= parseInt(betval)
     const notify = () => {
-      toast.success(`YOU GAIN : ${totalPrice}`)
+      toast.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`)
     }
     notify()
     totalPrice += parseInt(betval)
@@ -117,16 +116,16 @@ const App = () => {
     <div>
       <NavBar balance={balance}/>
 
-      <section className='flex gap-10 flex-col xsm:flex-row'>
+      <section className='flex gap-5 md-gap-10 flex-col-reverse md:flex-row'>
         {/* FORM SECTION */}
-        <div className='w-full h-[50vh] flex justify-center items-center xsm:h-[70vh] xsm:w-[30%]'>
+        <div className='w-full h-[50vh] flex justify-center items-center  md:h-[88vh] md:w-[30%]'>
           <Form setBetval={setBetval} setBombs={setBombs} handleCashOut={handleCashOut}
           balance={balance} betval={betval} bombs={bombs} betPlaced={betPlaced} handleSubmit={handleSubmit} />
         </div>
         
         {/* //Card SECTION */}
-        <div className='max-w-[100vw] bg-gray-800 px-5 py-5 xsm:mt-10 mx-auto max-w-[142.5rem]'>
-          <div className='grid grid-cols-5 gap-3'>
+        <div className='max-w-[100vw] bg-Input md:px-5 md:py-5 md:mt-[1.5rem] mx-auto md:mr-[9rem] rounded-md mt-5'>
+          <div className='max-w-full grid grid-cols-5 gap-3'>
             {cards.map((card) => (
               <Card key={card.id}
                 card={card}
@@ -138,7 +137,7 @@ const App = () => {
         </div>
       </section>
       <ToastContainer
-        position="bottom-center"
+        position="top-center" 
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
