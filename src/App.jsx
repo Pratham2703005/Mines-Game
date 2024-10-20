@@ -1,30 +1,38 @@
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2'
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
-// import './App.css';
 import Card from './components/Card';
-// import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Form from './components/Form';
 import NavBar from './components/NavBar';
 
-const bombImage = { "src": "./assets/bomb.png", matched: false };
-const diamondImage = { "src": "./assets/diamond.png", matched: false };
+const bombImage = { src: './assets/bomb.png', matched: false };
+const diamondImage = { src: './assets/diamond.png', matched: false };
+// const Swal = require('sweetalert2')
 const notyf = new Notyf({
   position: {
     x: 'center',
     y: 'top',
   },
 });
-const App = () => {
 
-  const [balance, setBalance] = useState(1000);
+const App = () => {
+  const [balance, setBalance] = useState(1000); // Default balance
   const [bombs, setBombs] = useState(3);
   const [cards, setCards] = useState([]);
   const [chosen, setChosen] = useState(null);
   const [betval, setBetval] = useState(10);
   const [betPlaced, setBetPlaced] = useState(false);
   const [increment, setIncrement] = useState(0);
+
+  useEffect(() => {
+    const storedBalance = localStorage.getItem('balance');
+    if (storedBalance) {
+      setBalance(parseFloat(storedBalance));
+    } else {
+      localStorage.setItem('balance', 1000); // Set default balance to 1000 if not present
+    }
+  }, []);
 
   const shuffleCards = () => {
     const allcards = [];
@@ -49,26 +57,24 @@ const App = () => {
     if (chosen) {
       if (chosen.src === './assets/bomb.png') {
         const turned = calculateTurnedCards();
-        let totalPrice = (turned) * increment;
-        totalPrice *= parseInt(betval)
-        totalPrice += parseInt(betval)
+        let totalPrice = turned * increment;
+        totalPrice *= parseInt(betval);
+        totalPrice += parseInt(betval);
 
-        // const notify = () => toast.error(`YOU LOST : $${parseFloat(totalPrice.toFixed(2))}`);
-        // notify()
-        notyf.error(`YOU LOST : $${parseFloat(totalPrice.toFixed(2))}`)
-        const sound = new Audio('./assets/bombs.mp3'); // Sound file ka path
-          sound.play();
-          
-        setTimeout(()=>{
+        notyf.error(`YOU LOST : $${parseFloat(totalPrice.toFixed(2))}`);
+        const sound = new Audio('./assets/bombs.mp3'); // Sound file path
+        sound.play();
+
+        setTimeout(() => {
           setChosen(null);
           setBetPlaced(false);
           shuffleCards();
-        },1000);
+        }, 1000);
       } else {
-        setCards(prevCards => {
-          return prevCards.map(card => {
+        setCards((prevCards) => {
+          return prevCards.map((card) => {
             if (card === chosen) {
-              const sound = new Audio('./assets/diamond.mp3'); // Sound file ka path
+              const sound = new Audio('./assets/diamond.mp3'); // Sound file path
               sound.play();
               return { ...card, matched: true };
             } else {
@@ -87,34 +93,27 @@ const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (betval > balance) {
-      setBetval(parseInt(balance))
+      setBetval(parseInt(balance));
     } else {
       setBetPlaced(true);
       const tmp = balance - betval;
       setBalance(parseFloat(tmp.toFixed(2)));
+      localStorage.setItem('balance', parseFloat(tmp.toFixed(2))); // Save updated balance in localStorage
       setIncrement(parseFloat(bombs * 0.04));
     }
   };
 
-  const calculateTurnedCards = () => {
-    return cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
-  };
-
   const handleCashOut = () => {
     const turned = calculateTurnedCards();
-
     let totalPrice = turned * increment;
-    totalPrice *= parseInt(betval)
-    // const notify = () => {
-    //   toast.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`)
-    // }
-    // notify()
-    notyf.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`)
-    totalPrice += parseInt(betval)
-    
+    totalPrice *= parseInt(betval);
+    notyf.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`);
+    totalPrice += parseInt(betval);
+
     setBalance((prevBalance) => {
       const newBalance = prevBalance + totalPrice;
       const roundedBalance = parseFloat(newBalance.toFixed(2));
+      localStorage.setItem('balance', roundedBalance); // Save balance in localStorage
       return roundedBalance;
     });
 
@@ -122,22 +121,62 @@ const App = () => {
     setBetval(0);
   };
 
+  const calculateTurnedCards = () => {
+    return cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
+  };
+
+  const handleRefill = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to refill your balance",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, refill!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setBetval(0);   
+        setBalance(1000);
+        localStorage.setItem('balance', 1000);
+        Swal.fire({
+          title: "Refilled!",
+          text: "Your balance has been refilled.",
+          icon: "success"
+        });
+      }
+    });
+    // notyf.success('Balance refilled to $1000!');
+  };
+
   return (
     <div>
-      <NavBar balance={balance}/>
+      <NavBar balance={balance} />
 
       <section className='flex gap-5 md-gap-10 flex-col-reverse md:flex-row'>
         {/* FORM SECTION */}
-        <div className='w-full h-[50vh] flex justify-center items-center  md:h-[88vh] md:w-[30%]'>
-          <Form setBetval={setBetval} setBombs={setBombs} handleCashOut={handleCashOut}
-          balance={balance} betval={betval} bombs={bombs} betPlaced={betPlaced} handleSubmit={handleSubmit} />
+        <div className='w-full h-[50vh] flex justify-center items-center md:h-[88vh] md:w-[30%]'>
+          <Form
+            setBetval={setBetval}
+            setBombs={setBombs}
+            handleCashOut={handleCashOut}
+            balance={balance}
+            betval={betval}
+            bombs={bombs}
+            betPlaced={betPlaced}
+            handleSubmit={handleSubmit}
+            handleRefill={handleRefill}
+          />
+          {/* Refill Button */}
+          
         </div>
-        
-        {/* //Card SECTION */}
+
+        {/* CARD SECTION */}
         <div className='max-w-[100vw] bg-Input md:px-5 md:py-5 md:mt-[1.5rem] mx-auto md:mr-[9rem] rounded-md mt-5'>
           <div className='max-w-full grid grid-cols-5 gap-3'>
             {cards.map((card) => (
-              <Card key={card.id}
+              <Card
+                key={card.id}
                 card={card}
                 handleChoice={handleChoice}
                 flipped={card === chosen || card.matched}
@@ -146,20 +185,8 @@ const App = () => {
           </div>
         </div>
       </section>
-      {/* <ToastContainer
-        position="top-center" 
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-        transition:Bounce /> */}
     </div>
   );
-}
+};
 
 export default App;
