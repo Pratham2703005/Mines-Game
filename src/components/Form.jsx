@@ -2,13 +2,7 @@ import React, { useRef } from 'react';
 import { VscDebugRestart } from "react-icons/vsc";
 
 const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betPlaced, handleSubmit, handleRefill }) => {
-  const bombref = useRef(null); // Moved inside the component
 
-  const handleBombFocus = () => {
-    if (bombref.current) {
-      bombref.current.focus();
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit} className='bg-BetSec rounded-lg shadow-lg flex flex-col items-start md:min-w-[25.5rem] max-w-[332px] md:h-[76vh] md:ml-[310px] p-[1.75rem]'>
@@ -30,12 +24,14 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
         />
         <button
           onClick={() => setBetval(Math.floor(balance / 2))}
+          disabled={betPlaced}
           className='bg-gray-600 mb-4 text-white rounded-md px-4 py-2 ml-2 hover:bg-gray-700 transition duration-200'
         >
           1/2
         </button>
         <button
           onClick={() => setBetval(Math.floor(balance))}
+          disabled={betPlaced}
           className='bg-gray-600 mb-4 text-white rounded-md px-4 py-2 ml-2 hover:bg-gray-700 transition duration-200'
         >
           2x
@@ -44,7 +40,6 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
 
       <label htmlFor="numMines" className='text-white mb-1'>Number of Mines : </label>
       <input
-        ref={bombref}
         id="numMines"
         type="number"
         min={1}
@@ -68,8 +63,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
           <button
             type='button'
             onClick={() => {
-              handleCashOut(); // Corrected function call
-              handleBombFocus(); // Calling focus function
+              handleCashOut();
             }}
             className='w-full bg-[rgb(230,2,2)] text-white py-2 rounded-md hover:bg-[rgb(255,50,50)] transition-colors mt-8 mr-2'
           >
