@@ -1,14 +1,14 @@
 {
     "short_name": "Mines",
-    "name": "Mines Game",
+    "name": "Mines Game - By Pratham Israni",
     "icons": [
       {
-        "src": "myFav.png",
+        "src": "myFav.ico",
         "type": "image/png",
         "sizes": "192x192"
       },
       {
-        "src": "myFav.png",
+        "src": "myFav.ico",
         "type": "image/png",
         "sizes": "512x512"
       }
