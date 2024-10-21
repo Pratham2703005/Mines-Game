@@ -3,12 +3,12 @@
     "name": "Mines Game - By Pratham Israni",
     "icons": [
       {
-        "src": "myFav.ico",
+        "src": "myFav.png",
         "type": "image/png",
         "sizes": "192x192"
       },
       {
-        "src": "myFav.ico",
+        "src": "myFav.png",
         "type": "image/png",
         "sizes": "512x512"
       }
