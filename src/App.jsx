@@ -8,7 +8,7 @@ import NavBar from './components/NavBar';
 
 const bombImage = { src: './assets/bomb.png', matched: false };
 const diamondImage = { src: './assets/diamond.png', matched: false };
-const notyf = new Notyf({
+const notyf = new Notyf({   
   position: {
     x: 'center',
     y: 'top',
@@ -26,8 +26,43 @@ const App = () => {
   const [refillCount, setRefillCount] = useState(0); // Track refills
   const [maxBalance, setMaxBalance] = useState(1000); // Track max balance
 
-  // Load balance, refill count, and max balance from localStorage
-  useEffect(() => {
+  useEffect(() => {    // Disabling Console
+    const handleKeyDown = (e) => {
+      // Block F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+      }
+      // Block Ctrl+Shift+I (Inspect)
+      if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+      }
+      // Block Ctrl+Shift+C (Console)
+      if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+      }
+      // Block Ctrl+Shift+J (Sources)
+      if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+        e.preventDefault();
+      }
+      // Block Ctrl+U (View Source)
+      if (e.ctrlKey && e.key === 'U') {
+        e.preventDefault();
+      }
+    };
+  
+    const disableRightClick = (e) => {
+      e.preventDefault();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('contextmenu', disableRightClick);
+  
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('contextmenu', disableRightClick);
+    };
+  }, []);
+  
+  useEffect(() => {       //Retrieval of data from localStorage
     const storedBalance = localStorage.getItem('balance');
     const storedRefillCount = localStorage.getItem('refillCount');
     const storedMaxBalance = localStorage.getItem('maxBalance');
@@ -39,7 +74,7 @@ const App = () => {
     if (!storedBalance) localStorage.setItem('balance', 1000); // Set default balance to 1000 if not present
   }, []);
 
-  const shuffleCards = () => {
+  const shuffleCards = () => {   //function to shuffle cards
     const allcards = [];
     for (let i = 0; i < 25; i++) {
       if (i < bombs) {
@@ -52,13 +87,13 @@ const App = () => {
     setCards(allcards);
   };
 
-  const handleChoice = (card) => {
+  const handleChoice = (card) => {  // ye choose kre ki card flip krana h ki nhi
     if (betPlaced) {
       setChosen(card);
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {     // when we select a card
     if (chosen) {
       if (chosen.src === './assets/bomb.png') {
         const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
@@ -91,11 +126,11 @@ const App = () => {
     }
   }, [chosen]);
 
-  useEffect(() => {
+  useEffect(() => {  // after bet place randomize the cards
     shuffleCards();
   }, [betPlaced]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => {     // Handle Betting Value and setting reward for right selection
     e.preventDefault();
     if (betval > balance) {
       setBetval(parseInt(balance));
@@ -108,7 +143,7 @@ const App = () => {
     }
   };
 
-  const handleCashOut = () => {
+  const handleCashOut = () => {     // Handle Reward Time and resetting the position
     const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
     let totalPrice = turned * increment;
     totalPrice *= parseInt(betval);
@@ -132,7 +167,7 @@ const App = () => {
     setBetPlaced(false);
   };
 
-  const handleRefill = () => {
+  const handleRefill = () => {       // When want to reinvest money
     Swal.fire({
       title: "Are you sure?",
       text: "You want to refill your balance",
