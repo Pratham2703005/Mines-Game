@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 import Card from './components/Card';
@@ -8,7 +8,6 @@ import NavBar from './components/NavBar';
 
 const bombImage = { src: './assets/bomb.png', matched: false };
 const diamondImage = { src: './assets/diamond.png', matched: false };
-// const Swal = require('sweetalert2')
 const notyf = new Notyf({
   position: {
     x: 'center',
@@ -24,14 +23,20 @@ const App = () => {
   const [betval, setBetval] = useState(10);
   const [betPlaced, setBetPlaced] = useState(false);
   const [increment, setIncrement] = useState(0);
+  const [refillCount, setRefillCount] = useState(0); // Track refills
+  const [maxBalance, setMaxBalance] = useState(1000); // Track max balance
 
+  // Load balance, refill count, and max balance from localStorage
   useEffect(() => {
     const storedBalance = localStorage.getItem('balance');
-    if (storedBalance) {
-      setBalance(parseFloat(storedBalance));
-    } else {
-      localStorage.setItem('balance', 1000); // Set default balance to 1000 if not present
-    }
+    const storedRefillCount = localStorage.getItem('refillCount');
+    const storedMaxBalance = localStorage.getItem('maxBalance');
+    
+    if (storedBalance) setBalance(parseFloat(storedBalance));
+    if (storedRefillCount) setRefillCount(parseInt(storedRefillCount));
+    if (storedMaxBalance) setMaxBalance(parseFloat(storedMaxBalance));
+    
+    if (!storedBalance) localStorage.setItem('balance', 1000); // Set default balance to 1000 if not present
   }, []);
 
   const shuffleCards = () => {
@@ -56,7 +61,7 @@ const App = () => {
   useEffect(() => {
     if (chosen) {
       if (chosen.src === './assets/bomb.png') {
-        const turned = calculateTurnedCards();
+        const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
         let totalPrice = turned * increment;
         totalPrice *= parseInt(betval);
         totalPrice += parseInt(betval);
@@ -104,7 +109,7 @@ const App = () => {
   };
 
   const handleCashOut = () => {
-    const turned = calculateTurnedCards();
+    const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
     let totalPrice = turned * increment;
     totalPrice *= parseInt(betval);
     notyf.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`);
@@ -113,16 +118,18 @@ const App = () => {
     setBalance((prevBalance) => {
       const newBalance = prevBalance + totalPrice;
       const roundedBalance = parseFloat(newBalance.toFixed(2));
+      
+      // Update max balance if new balance is higher
+      if (roundedBalance > maxBalance) {
+        setMaxBalance(roundedBalance);
+        localStorage.setItem('maxBalance', roundedBalance); // Save max balance in localStorage
+      }
+
       localStorage.setItem('balance', roundedBalance); // Save balance in localStorage
       return roundedBalance;
     });
-
-    setBetPlaced(false);
     setBetval(0);
-  };
-
-  const calculateTurnedCards = () => {
-    return cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
+    setBetPlaced(false);
   };
 
   const handleRefill = () => {
@@ -136,9 +143,12 @@ const App = () => {
       confirmButtonText: "Yes, refill!"
     }).then((result) => {
       if (result.isConfirmed) {
-        setBetval(0);   
+        setBetval(0);
         setBalance(1000);
+        setRefillCount(prev => prev + 1);
         localStorage.setItem('balance', 1000);
+        localStorage.setItem('refillCount', refillCount + 1);
+
         Swal.fire({
           title: "Done!",
           text: "Your balance has been refilled.",
@@ -146,12 +156,11 @@ const App = () => {
         });
       }
     });
-    // notyf.success('Balance refilled to $1000!');
   };
 
   return (
     <div>
-      <NavBar balance={balance} />
+      <NavBar balance={balance} maxBalance={maxBalance} refillCount={refillCount} />
 
       <section className='flex gap-5 md-gap-10 flex-col-reverse md:flex-row'>
         {/* FORM SECTION */}
@@ -167,8 +176,6 @@ const App = () => {
             handleSubmit={handleSubmit}
             handleRefill={handleRefill}
           />
-          {/* Refill Button */}
-          
         </div>
 
         {/* CARD SECTION */}
