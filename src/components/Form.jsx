@@ -28,6 +28,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
           value={betval}
           onFocus={(e) => e.target.select()}
           onChange={(e) => setBetval(prev => prev === 0 ? prev + Number(e.target.value) : Number(e.target.value))}
+          
           onInput={(e) => e.target.value = e.target.value.replace(/^0+/, '')}
           className='w-full px-4 py-2 mb-4 text-white bg-Input rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200'
           placeholder='Enter Bet Value'

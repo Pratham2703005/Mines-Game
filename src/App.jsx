@@ -38,8 +38,6 @@ const App = () => {
     const savedObject = localStorage.getItem('maxBetLoose');
     return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, lostAmount: 0};
   })
-  // const [maxBetLoose, setMaxBetLoose] = useState(0);
-
   useEffect(() => {      // Disabling Inspect 
     const handleKeyDown = (e) => {
       if (e.key === 'F12') e.preventDefault();
@@ -70,15 +68,7 @@ const App = () => {
     const storedBetZeroWins = localStorage.getItem('WinNothing');
     const storedMineOpen  = localStorage.getItem('MineOpen');
     const storedMAxMineOpen = localStorage.getItem('MaxMineOpen');
-    // const storedMaxBetWin = localStorage.getItem('MaxBetWin');
-    
-    // if (storedMaxBetWin){
-    //   let maxBetWinObj = JSON.parse(storedMaxBetWin)
-    //   maxBetWinObj.profit = 0;
-    //   maxBetWinObj.betVal =0 ;
-    //   maxBetWinObj.mineOpen=0;
-    //   maxBetWinObj.mines =0;
-    // }
+
     if (storedMAxMineOpen) setMineOpen(parseInt(storedMAxMineOpen));
     if (storedMineOpen) setMineOpen(parseInt(storedMineOpen));
     if (storedBetZeroWins) setBetCount(parseInt(storedBetZeroWins));
@@ -126,7 +116,7 @@ const App = () => {
         let totalPrice = turned * increment;
         totalPrice *= parseInt(betval);
 
-        if(totalPrice >= maxBetLoose.lostAmount){
+        if(totalPrice >= maxBetLoose.lostAmount || (betval > maxBetLoose.betVal && bombs > maxBetLoose.mines)){
           setMaxBetLoose({
             betVal : betval,
             mines : bombs,
@@ -249,8 +239,11 @@ const App = () => {
       return roundedBalance;
     });
     
-    setBetval(0);
-    setBetPlaced(false);
+    setTimeout(()=>{
+      setBetPlaced(false);
+    },100)
+    
+    
     setMineOpen(()=>{
       localStorage.setItem('MineOpen',0);
       if(maxMineOpen < mineOpen){
@@ -259,6 +252,7 @@ const App = () => {
       }
       return 0;
     })
+    
 
   };
 
