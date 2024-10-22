@@ -25,54 +25,79 @@ const App = () => {
   const [increment, setIncrement] = useState(0);
   const [refillCount, setRefillCount] = useState(0); // Track refills
   const [maxBalance, setMaxBalance] = useState(1000); // Track max balance
+  const [betCount, setBetCount] = useState(0);
+  const [betWin ,setBetWin ] = useState(0);
+  const [betZeroWin, setBetZeroWin]  = useState(0);
+  const [mineOpen , setMineOpen] = useState(0);
+  const [maxMineOpen, setMaxMineOpen] = useState(0);
+  const [maxBetWin, setMaxBetWin] = useState(()=>{
+    const savedObject = localStorage.getItem('maxBetWin');
+    return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, profit: 0};
+  });
+  const [maxBetLoose, setMaxBetLoose] = useState(()=>{
+    const savedObject = localStorage.getItem('maxBetLoose');
+    return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, lostAmount: 0};
+  })
+  // const [maxBetLoose, setMaxBetLoose] = useState(0);
 
-  useEffect(() => {    // Disabling Console
-    const handleKeyDown = (e) => {
-      // Block F12
-      if (e.key === 'F12') {
-        e.preventDefault();
-      }
-      // Block Ctrl+Shift+I (Inspect)
-      if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-        e.preventDefault();
-      }
-      // Block Ctrl+Shift+C (Console)
-      if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-        e.preventDefault();
-      }
-      // Block Ctrl+Shift+J (Sources)
-      if (e.ctrlKey && e.shiftKey && e.key === 'J') {
-        e.preventDefault();
-      }
-      // Block Ctrl+U (View Source)
-      if (e.ctrlKey && e.key === 'U') {
-        e.preventDefault();
-      }
-    };
+  // useEffect(() => {      // Disabling Inspect 
+  //   const handleKeyDown = (e) => {
+  //     if (e.key === 'F12') e.preventDefault();
+  //     if (e.ctrlKey && e.shiftKey && e.key === 'I') e.preventDefault();
+  //     if (e.ctrlKey && e.shiftKey && e.key === 'C') e.preventDefault();
+  //     if (e.ctrlKey && e.shiftKey && e.key === 'J') e.preventDefault();
+  //     if (e.ctrlKey && e.key === 'U') e.preventDefault();
+  //   };
   
-    const disableRightClick = (e) => {
-      e.preventDefault();
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('contextmenu', disableRightClick);
-  
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('contextmenu', disableRightClick);
-    };
-  }, []);
+  //   const disableRightClick = (e) => {
+  //     e.preventDefault();
+  //   };
+
+  //   document.addEventListener('keydown', handleKeyDown);
+  //   document.addEventListener('contextmenu', disableRightClick);
+  //   return () => {
+  //     document.removeEventListener('keydown', handleKeyDown);
+  //     document.removeEventListener('contextmenu', disableRightClick);
+  //   };
+  // }, []);
   
   useEffect(() => {       //Retrieval of data from localStorage
     const storedBalance = localStorage.getItem('balance');
     const storedRefillCount = localStorage.getItem('refillCount');
     const storedMaxBalance = localStorage.getItem('maxBalance');
+    const storedBetCount = localStorage.getItem('BetsMade');
+    const storedBetWins = localStorage.getItem('Wins');
+    const storedBetZeroWins = localStorage.getItem('WinNothing');
+    const storedMineOpen  = localStorage.getItem('MineOpen');
+    const storedMAxMineOpen = localStorage.getItem('MaxMineOpen');
+    // const storedMaxBetWin = localStorage.getItem('MaxBetWin');
     
+    // if (storedMaxBetWin){
+    //   let maxBetWinObj = JSON.parse(storedMaxBetWin)
+    //   maxBetWinObj.profit = 0;
+    //   maxBetWinObj.betVal =0 ;
+    //   maxBetWinObj.mineOpen=0;
+    //   maxBetWinObj.mines =0;
+    // }
+    if (storedMAxMineOpen) setMineOpen(parseInt(storedMAxMineOpen));
+    if (storedMineOpen) setMineOpen(parseInt(storedMineOpen));
+    if (storedBetZeroWins) setBetCount(parseInt(storedBetZeroWins));
+    if (storedBetWins) setBetCount(parseInt(storedBetWins));
+    if (storedBetCount) setBetCount(parseInt(storedBetCount));
     if (storedBalance) setBalance(parseFloat(storedBalance));
     if (storedRefillCount) setRefillCount(parseInt(storedRefillCount));
     if (storedMaxBalance) setMaxBalance(parseFloat(storedMaxBalance));
     
     if (!storedBalance) localStorage.setItem('balance', 1000); // Set default balance to 1000 if not present
   }, []);
+
+  useEffect(()=>{
+    localStorage.setItem('maxBetWin', JSON.stringify(maxBetWin));
+  },[maxBetWin])
+
+  useEffect(()=>{
+    localStorage.setItem('maxBetLoose', JSON.stringify(maxBetLoose));
+  },[maxBetLoose]);
 
   const shuffleCards = () => {   //function to shuffle cards
     const allcards = [];
@@ -96,20 +121,37 @@ const App = () => {
   useEffect(() => {     // when we select a card
     if (chosen) {
       if (chosen.src === './assets/bomb.png') {
+        
         const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
         let totalPrice = turned * increment;
         totalPrice *= parseInt(betval);
+
+        if(totalPrice >= maxBetLoose.lostAmount){
+          setMaxBetLoose({
+            betVal : betval,
+            mines : bombs,
+            minesOpen : mineOpen,
+            lostAmount : totalPrice
+          })
+        }
         totalPrice += parseInt(betval);
 
         notyf.error(`YOU LOST : $${parseFloat(totalPrice.toFixed(2))}`);
         const sound = new Audio('./assets/bombs.mp3'); // Sound file path
         sound.play();
 
+
         setTimeout(() => {
           setChosen(null);
           setBetPlaced(false);
           shuffleCards();
+          setMineOpen(()=>{
+            localStorage.setItem('MineOpen',0);
+            return 0;
+          })
         }, 1000);
+
+
       } else {
         setCards((prevCards) => {
           return prevCards.map((card) => {
@@ -122,6 +164,11 @@ const App = () => {
             }
           });
         });
+        setMineOpen(prev=>{
+          const tmp = prev + 1 ;
+          localStorage.setItem('MineOpen',tmp);
+          return tmp;
+       })
       }
     }
   }, [chosen]);
@@ -140,6 +187,16 @@ const App = () => {
       setBalance(parseFloat(tmp.toFixed(2)));
       localStorage.setItem('balance', parseFloat(tmp.toFixed(2))); // Save updated balance in localStorage
       setIncrement(parseFloat(bombs * 0.04));
+
+      setBetCount(prevCount => {
+        const newCount = prevCount + 1;
+        localStorage.setItem('BetsMade', newCount); // Save updated bet count to localStorage
+        return newCount;
+      });
+      setMineOpen(()=>{
+        localStorage.setItem('MineOpen',0);
+        return 0;
+      })
     }
   };
 
@@ -147,7 +204,35 @@ const App = () => {
     const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
     let totalPrice = turned * increment;
     totalPrice *= parseInt(betval);
-    notyf.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`);
+    if(totalPrice !== 0){
+      setBetWin(prevCount => {
+        const newCount = prevCount + 1;
+        localStorage.setItem('Win', newCount); // Save updated bet count to localStorage
+        return newCount;
+      });
+    }else{
+      setBetZeroWin(prevCount => {
+        const newCount = prevCount + 1;
+        localStorage.setItem('WinNothing', newCount); // Save updated bet count to localStorage
+        return newCount;
+      });
+    }
+    if(totalPrice >= betval*2){
+      notyf.success(`JACKPOT : ${parseFloat(totalPrice.toFixed(2))}`);
+    }else if(totalPrice >= betval){
+      notyf.success(`EPIC WIN: ${parseFloat(totalPrice.toFixed(2))}`);
+    }else{
+      notyf.success(`YOU GAIN : ${parseFloat(totalPrice.toFixed(2))}`);
+    }
+
+    if(totalPrice >= maxBetWin.profit){
+      setMaxBetWin({
+        betVal: betval,
+        mines : bombs,
+        minesOpen : mineOpen,
+        profit: parseFloat(totalPrice.toFixed(2)),
+      })
+    }
     totalPrice += parseInt(betval);
 
     setBalance((prevBalance) => {
@@ -163,8 +248,18 @@ const App = () => {
       localStorage.setItem('balance', roundedBalance); // Save balance in localStorage
       return roundedBalance;
     });
+    
     setBetval(0);
     setBetPlaced(false);
+    setMineOpen(()=>{
+      localStorage.setItem('MineOpen',0);
+      if(maxMineOpen < mineOpen){
+        setMaxMineOpen(mineOpen)
+        localStorage.setItem('MaxMineOpen',mineOpen);
+      }
+      return 0;
+    })
+
   };
 
   const handleRefill = () => {       // When want to reinvest money
