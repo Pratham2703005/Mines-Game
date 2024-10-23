@@ -9,7 +9,7 @@ const NavBar = ({ balance }) => {
           <PopupMenuComponent />
           {/* Set the logo and apply the blend effect */}
           <img 
-            src="public/stake.png"  // Make sure the image path is correct
+            src="/stake.png"  // Make sure the image path is correct
             alt="Logo" 
             className="h-10 w-auto min-w-2"  // Use darken or multiply for blending
             // style={{ backgroundColor: 'rgb(19, 33, 51)' }}  // Apply the background color here
