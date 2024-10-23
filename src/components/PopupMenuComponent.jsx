@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { BarChart, User, HelpCircle, UserCircle, Settings, Bell, Lock, LogOut, X, Menu, Sun, Moon, ArrowLeft } from 'lucide-react';
 
 const menuOptions = [
@@ -27,12 +27,12 @@ const PopupMenu = ({ show, setShow, title, options, onOptionClick }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black/50 z-40" onClick={() => setShow(false)} />
-      <div className="relative w-3/4 md:w-2/5 h-1/2 bg-white rounded-md z-50 overflow-hidden border border-gray-200">
+      <div className="relative w-3/4 md:w-2/5 max-h-[40vh] bg-white rounded-md z-50 overflow-y-scroll border border-gray-200">
         <div className="flex justify-between items-center pt-3 pb-2 px-6 bg-gray-100">
           <small className="uppercase text-gray-600 font-light text-xs">{title}</small>
           <X className="w-4 h-4 cursor-pointer text-gray-600" onClick={() => setShow(false)} />
         </div>
-        <div className="h-full overflow-y-auto bg-white">
+        <div className="max-h-[60vh] overflow-y-auto bg-white">
           <div className="flex flex-col">
             {options.map((option, index) => (
               <button
@@ -57,7 +57,7 @@ const LargeWindow = ({ show, setShow, title, children, onBack }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black/50 z-40" onClick={() => setShow(false)} />
-      <div className="relative w-11/12 md:w-3/4 h-3/4 bg-white rounded-md z-50 overflow-hidden border border-gray-200">
+      <div className="relative w-11/12 md:w-3/4 min-h-[80vh] bg-white rounded-md z-50 overflow-hidden border border-gray-200">
         <div className="flex justify-between items-center pt-3 pb-2 px-6 border-b border-gray-200 bg-gray-100">
           <div className="flex items-center">
             <button onClick={onBack} className="mr-2">
@@ -67,14 +67,13 @@ const LargeWindow = ({ show, setShow, title, children, onBack }) => {
           </div>
           <X className="w-5 h-5 cursor-pointer text-gray-600" onClick={() => setShow(false)} />
         </div>
-        <div className="h-full overflow-y-auto p-6 bg-white">
+        <div className="h-full max-h-[70vh] overflow-y-auto p-6 bg-white">
           {children}
         </div>
       </div>
     </div>
   );
 };
-
 const ThemeSwitcher = () => {
   const [theme, setTheme] = useState('light'); // Simulating theme state
 
@@ -110,6 +109,21 @@ const PopupMenuComponent = () => {
   const [largeWindowContent, setLargeWindowContent] = useState(null);
   const [largeWindowTitle, setLargeWindowTitle] = useState('');
 
+  useEffect(() => {
+    if (showMenu || showLargeWindow) {
+      // Body scroll disable
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Body scroll enable
+      document.body.style.overflow = 'auto';
+    }
+
+    // Clean up when component unmounts or menu/large window closes
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showMenu, showLargeWindow]);
+
   const handleOptionClick = (option) => {
     setShowMenu(false);
     setLargeWindowTitle(option.label);
@@ -130,7 +144,12 @@ const PopupMenuComponent = () => {
 
   return (
     <div>
-      <MenuButton onClick={() => setShowMenu(true)} isVisible={!showMenu && !showLargeWindow} />
+      <MenuButton
+        onClick={() => {
+          setShowMenu(true);
+        }}
+        isVisible={!showMenu && !showLargeWindow}
+      />
       <PopupMenu 
         show={showMenu} 
         setShow={setShowMenu} 
@@ -149,5 +168,6 @@ const PopupMenuComponent = () => {
     </div>
   );
 };
+
 
 export default PopupMenuComponent;
