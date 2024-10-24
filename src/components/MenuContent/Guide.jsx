@@ -55,7 +55,7 @@ const Guide = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg min-h-[25rem] flex flex-col justify-between">
+    <div className="max-w-4xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg min-h-[29rem] flex flex-col justify-between">
       <div className="p-6 flex-grow">
         <h1 className="text-center text-yellow-400 font-extrabold text-2xl md:text-3xl mb-6">Mines Guide</h1>
 
