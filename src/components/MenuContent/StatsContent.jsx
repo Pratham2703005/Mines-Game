@@ -7,7 +7,7 @@ const StatsContent = () => {
     const storedRefillCount = localStorage.getItem('refillCount');
     const storedMaxBalance = localStorage.getItem('maxBalance');
     const storedBetCount = localStorage.getItem('BetsMade');
-    const storedBetWins = localStorage.getItem('Win');
+    const storedBetWins = localStorage.getItem('Wins');
     const storedBetZeroWins = localStorage.getItem('WinNothing');
     const storedMineOpen = localStorage.getItem('MineOpen');
     const storedMaxMineOpen = localStorage.getItem('MaxMineOpen');

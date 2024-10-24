@@ -225,8 +225,11 @@ const App = () => {
 
 
     if (totalPrice !== 0) {
-      localStorage.setItem('Win', betWin + 1);
-      setBetWin(betWin+1)
+      setBetWin(prev=>{
+        const tmp =  prev + 1;
+        localStorage.setItem('Wins',tmp);
+        return tmp;
+      })
       setCurrWinStreak((prev) =>{
         setCurrLosStreak(0);
         localStorage.setItem('CurrLosStreak',0);
