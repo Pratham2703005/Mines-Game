@@ -79,14 +79,14 @@ const App = () => {
     const storedMaxLosStreak = localStorage.getItem('MaxLosStreak');
 
 
-    if (storedcurrWinStreak) setMineOpen(parseInt(storedcurrWinStreak));
-    if (storedMaxWinStreak) setMineOpen(parseInt(storedMaxWinStreak));
-    if (storedcurrLosStreak) setMineOpen(parseInt(storedcurrLosStreak));
-    if (storedMaxLosStreak) setMineOpen(parseInt(storedMaxLosStreak));
-    if (storedMAxMineOpen) setMineOpen(parseInt(storedMAxMineOpen));
+    if (storedcurrWinStreak) setCurrWinStreak(parseInt(storedcurrWinStreak));
+    if (storedMaxWinStreak) setMaxWinStreak(parseInt(storedMaxWinStreak));
+    if (storedcurrLosStreak) setCurrLosStreak(parseInt(storedcurrLosStreak));
+    if (storedMaxLosStreak) setMaxLosStreak(parseInt(storedMaxLosStreak));
+    if (storedMAxMineOpen) setMaxMineOpen(parseInt(storedMAxMineOpen));
     if (storedMineOpen) setMineOpen(parseInt(storedMineOpen));
-    if (storedBetZeroWins) setBetCount(parseInt(storedBetZeroWins));
-    if (storedBetWins) setBetCount(parseInt(storedBetWins));
+    if (storedBetZeroWins) setBetZeroWin(parseInt(storedBetZeroWins));
+    if (storedBetWins) setBetWin(parseInt(storedBetWins));
     if (storedBetCount) setBetCount(parseInt(storedBetCount));
     if (storedBalance) setBalance(parseFloat(storedBalance));
     if (storedRefillCount) setRefillCount(parseInt(storedRefillCount));
@@ -226,7 +226,7 @@ const App = () => {
 
     if (totalPrice !== 0) {
       localStorage.setItem('Win', betWin + 1);
-      setBetWin(prev => prev + 1)
+      setBetWin(betWin+1)
       setCurrWinStreak((prev) =>{
         setCurrLosStreak(0);
         localStorage.setItem('CurrLosStreak',0);
