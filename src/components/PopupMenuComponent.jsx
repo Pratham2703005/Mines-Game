@@ -1,6 +1,7 @@
 import React, { useState ,useEffect} from 'react';
 import { BarChart, User, HelpCircle, UserCircle, Settings, Bell, Lock, LogOut, X, Menu, Sun, Moon, ArrowLeft } from 'lucide-react';
 import StatsContent from './MenuContent/StatsContent';
+import Guide from './MenuContent/Guide';
 
 const menuOptions = [
   { label: 'Statistics', icon: BarChart },
@@ -130,8 +131,10 @@ const PopupMenuComponent = () => {
     setLargeWindowTitle(option.label);
     if (option.label === 'Settings') {
       setLargeWindowContent(<SettingsContent />);
-    } else if(option.label == 'Statistics'){
+    } else if(option.label === 'Statistics'){
       setLargeWindowContent(<StatsContent/>)
+    }else if(option.label === 'Help' ){
+      setLargeWindowContent(<Guide/>)
     }
     else{
       setLargeWindowContent(

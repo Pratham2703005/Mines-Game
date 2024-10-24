@@ -5,6 +5,24 @@
 body{
   background-color: rgb(19,33,50);
 }
-::-webkit-scrollbar{
-  width: 0;
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ddd; /* Color of the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa; /* Color when hovered */
+}
+
+@media (max-width: 500px) {
+  ::-webkit-scrollbar{
+    width: 0;
+  }
 }
