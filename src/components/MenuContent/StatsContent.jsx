@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import StatsPie from './StatsPie';
+import { formatAmount } from '../../utility';
 
 const StatsContent = () => {
     // Retrieve other data from local storage
@@ -34,7 +35,7 @@ const StatsContent = () => {
     const losRatio = betCount > 0 ? ((losCount / betCount) * 100).toFixed(2) : 0;
     const noResultRatio = parseFloat(100 - losRatio - winRatio).toFixed(2);
     return (
-        <div className="p-6 bg-gray-200 text-black rounded-lg shadow-md max-w-lg mx-auto mt-5 mb-5">
+        <div className="p-6 bg-gray-200 text-black rounded-lg shadow-xl max-w-lg mx-auto mt-5 mb-5">
             <h1 className="text-3xl font-bold mb-4 text-center">Game Stats</h1>
             <div className='z-50 flex flex-col items-center justify-center h-[50%] overflow-hidden'>
                 {/* Heading */}
@@ -44,7 +45,7 @@ const StatsContent = () => {
                 <StatsPie data1={winRatio} data2={losRatio} data3={noResultRatio} />
 
                 {/* Legend for the colors */}
-                <div className="flex flex-col md:flex-row mt-4 md:space-x-4 mb-10">
+                <div className="flex flex-col xl:flex-row mt-4 xl:space-x-4 mb-10">
                     <div className="flex items-center">
                         <div className="w-4 h-4 bg-[rgb(2,230,3)] mr-2"></div>
                         <span>Win Ratio : {winRatio}%</span>
@@ -77,11 +78,11 @@ const StatsContent = () => {
                     </tr>
                     <tr>
                         <td className="border-b border-gray-400">Balance</td>
-                        <td className="border-b border-gray-400">{storedBalance || 0}</td>
+                        <td className="border-b border-gray-400">{formatAmount(storedBalance) || 0}</td>
                     </tr>
                     <tr>
                         <td className="border-b border-gray-400">Max Balance</td>
-                        <td className="border-b border-gray-400">{storedMaxBalance || 0}</td>
+                        <td className="border-b border-gray-400">{formatAmount(storedMaxBalance) || 0}</td>
                     </tr>
 
                     <tr>
@@ -139,12 +140,12 @@ const StatsContent = () => {
                         {/* First Row */}
                         <tr className="flex justify-between px-4 py-2">
                             <td className='w-3/4 text-left'>Bet Amount:</td>
-                            <td className='w-1/4 text-right'>{maxBetWin.betVal}</td>
+                            <td className='w-1/4 text-right'>{formatAmount(maxBetWin.betVal)}</td>
                         </tr>
                         {/* Second Row */}
                         <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Profit:</td>
-                            <td className='w-1/4 text-right'>{maxBetWin.profit}</td>
+                            <td className='w-3/4 text-left'>Mines:</td>
+                            <td className='w-1/4 text-right'>{maxBetWin.mines}</td>
                         </tr>
                         {/* Third Row */}
                         <tr className="flex justify-between px-4 py-2">
@@ -153,8 +154,8 @@ const StatsContent = () => {
                         </tr>
                         {/* Fourth Row */}
                         <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Mines:</td>
-                            <td className='w-1/4 text-right'>{maxBetWin.mines}</td>
+                            <td className='w-3/4 text-left'>Profit:</td>
+                            <td className='w-1/4 text-right'>{formatAmount(maxBetWin.profit)}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -168,12 +169,12 @@ const StatsContent = () => {
                         {/* First Row */}
                         <tr className="flex justify-between px-4 py-2">
                             <td className='w-3/4 text-left'>Bet Amount:</td>
-                            <td className='w-1/4 text-right'>{maxBetLoose.betVal}</td>
+                            <td className='w-1/4 text-right'>{formatAmount(maxBetLoose.betVal)}</td>
                         </tr>
                         {/* Second Row */}
                         <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Loss:</td>
-                            <td className='w-1/4 text-right'>{maxBetLoose.lostAmount}</td>
+                            <td className='w-3/4 text-left'>Mines:</td>
+                            <td className='w-1/4 text-right'>{maxBetLoose.mines}</td>
                         </tr>
                         {/* Third Row */}
                         <tr className="flex justify-between px-4 py-2">
@@ -182,8 +183,8 @@ const StatsContent = () => {
                         </tr>
                         {/* Fourth Row */}
                         <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Mines:</td>
-                            <td className='w-1/4 text-right'>{maxBetLoose.mines}</td>
+                            <td className='w-3/4 text-left'>Loss:</td>
+                            <td className='w-1/4 text-right'>{formatAmount(maxBetLoose.lostAmount)}</td>
                         </tr>
                     </tbody>
                 </table>

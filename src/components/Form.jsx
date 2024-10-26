@@ -15,7 +15,7 @@ const BootstrapTooltip = styled(({ className, ...props }) => (    //MUI Logic
 
 const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betPlaced, handleSubmit, handleRefill }) => {
   return (
-    <form onSubmit={handleSubmit} className='bg-BetSec rounded-lg shadow-lg flex flex-col items-start md:min-w-[25.5rem] max-w-[332px] md:h-[76vh] md:ml-[310px] p-[1.75rem]'>
+    <form onSubmit={handleSubmit} className='bg-BetSec rounded-lg shadow-lg flex flex-col items-start xl:min-w-[25.5rem] max-w-[332px] xl:h-[76vh] xl:ml-[310px] p-[1.75rem]'>
       <h1 className='text-white text-2xl font-bold mb-4 mx-auto'>MINES</h1>
 
       <label htmlFor="betValue" className='text-white mb-1'>Bet Amount : </label>

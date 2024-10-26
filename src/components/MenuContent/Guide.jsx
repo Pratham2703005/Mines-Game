@@ -55,15 +55,15 @@ const Guide = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg min-h-[29rem] flex flex-col justify-between">
+    <div className="max-w-4xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg min-h-[29rem] xl:min-h-[25.5rem] flex flex-col justify-between">
       <div className="p-6 flex-grow">
-        <h1 className="text-center text-yellow-400 font-extrabold text-2xl md:text-3xl mb-6">Mines Guide</h1>
+        <h1 className="text-center text-yellow-400 font-extrabold text-2xl xl:text-3xl mb-6">Mines Guide</h1>
 
         <div className="mb-6 flex-grow">
           <img 
             src={pages[currentPage].image} 
             alt={pages[currentPage].title} 
-            className="w-full h-auto max-h-40 object-contain rounded-lg shadow-md mb-4"
+            className="w-full h-auto max-h-40 object-contain rounded-lg shadow-xl mb-4"
           />
           <h2 className="text-lg font-bold text-blue-400 mb-2">{pages[currentPage].title}</h2>
           <p className="text-base leading-relaxed">{pages[currentPage].content}</p>

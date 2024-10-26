@@ -1,5 +1,6 @@
 import React from 'react';
 import PopupMenuComponent from './PopupMenuComponent';
+import { formatAmount } from '../utility';
 
 const NavBar = ({ balance }) => {
   return (
@@ -17,7 +18,7 @@ const NavBar = ({ balance }) => {
         </div>
         <div className='flex items-center text-20px text-white font-bold md:text-4xl'>
           <p className='text-orange-300 mr-2'>Balance:</p>
-          <span className='text-green-400'>${balance}</span>
+          <span className='text-green-400'>${formatAmount(balance)}</span>
         </div>
       </div>
     </nav>

@@ -5,6 +5,7 @@ import 'notyf/notyf.min.css';
 import Card from './components/Card';
 import Form from './components/Form';
 import NavBar from './components/NavBar';
+import { formatAmount } from './utility';
 
 const bombImage = { src: './assets/bomb.png', matched: false };
 const diamondImage = { src: './assets/diamond.png', matched: false };
@@ -34,7 +35,8 @@ const App = () => {
   const [maxWinStreak, setMaxWinStreak] = useState(0);
   const [currLosStreak, setCurrLosStreak] = useState(0);
   const [maxLosStreak, setMaxLosStreak] = useState(0);
-  
+  const [bombHit, setBombHit] = useState(false);
+
   const [maxBetWin, setMaxBetWin] = useState(() => {
     const savedObject = localStorage.getItem('maxBetWin');
     return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, profit: 0 };
@@ -93,6 +95,7 @@ const App = () => {
     if (storedMaxBalance) setMaxBalance(parseFloat(storedMaxBalance));
 
     if (!storedBalance) localStorage.setItem('balance', 1000); // Set default balance to 1000 if not present
+    if (!storedMaxBalance) localStorage.setItem('maxBalance', 1000);
   }, []);
 
   useEffect(() => {
@@ -114,10 +117,12 @@ const App = () => {
     }
     allcards.sort(() => Math.random() - 0.5);
     setCards(allcards);
+    setBombHit(false);
   };
 
-  const handleChoice = (card) => {  // ye choose kre ki card flip krana h ki nhi
-    if (betPlaced) {
+  const handleChoice = (card) => {
+    // Only allow card selection if bet is placed and no bomb has been hit
+    if (betPlaced && !bombHit) {
       setChosen(card);
     }
   };
@@ -125,7 +130,7 @@ const App = () => {
   useEffect(() => {     // when we select a card
     if (chosen) {
       if (chosen.src === './assets/bomb.png') {
-
+        setBombHit(true);
         const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
         let TP = turned * increment;
         TP *= parseInt(betval);
@@ -139,20 +144,20 @@ const App = () => {
             lostAmount: totalPrice
           })
         }
-        setCurrLosStreak((prev) =>{
+        setCurrLosStreak((prev) => {
           setCurrWinStreak(0);
-          localStorage.setItem('CurrWinStreak',0);
-          const streak = prev+1;
-          if(streak > maxLosStreak){
+          localStorage.setItem('CurrWinStreak', 0);
+          const streak = prev + 1;
+          if (streak > maxLosStreak) {
             setMaxLosStreak(streak);
-            localStorage.setItem('MaxLosStreak',streak);
+            localStorage.setItem('MaxLosStreak', streak);
           }
-          localStorage.setItem('CurrLosStreak',streak);
+          localStorage.setItem('CurrLosStreak', streak);
           return streak;
         });
         totalPrice += parseInt(betval);
 
-        notyf.error(`YOU LOST : $${totalPrice}`);
+        notyf.error(`YOU LOST : $${formatAmount(totalPrice)}`);
         const sound = new Audio('./assets/bombs.mp3'); // Sound file path
         sound.play();
 
@@ -225,20 +230,20 @@ const App = () => {
 
 
     if (totalPrice !== 0) {
-      setBetWin(prev=>{
-        const newWindCnt =  prev + 1;
-        localStorage.setItem('Wins',newWindCnt);
+      setBetWin(prev => {
+        const newWindCnt = prev + 1;
+        localStorage.setItem('Wins', newWindCnt);
         return newWindCnt;
       })
-      setCurrWinStreak((prev) =>{
+      setCurrWinStreak((prev) => {
         setCurrLosStreak(0);
-        localStorage.setItem('CurrLosStreak',0);
-        const streak = prev+1;
-        if(streak > maxWinStreak){
+        localStorage.setItem('CurrLosStreak', 0);
+        const streak = prev + 1;
+        if (streak > maxWinStreak) {
           setMaxWinStreak(streak);
-          localStorage.setItem('MaxWinStreak',streak);
+          localStorage.setItem('MaxWinStreak', streak);
         }
-        localStorage.setItem('CurrWinStreak',streak);
+        localStorage.setItem('CurrWinStreak', streak);
         return streak;
       });
     } else {
@@ -248,17 +253,13 @@ const App = () => {
         return newCount;
       });
     }
-    
-    
-
-
 
     if (totalPrice >= betval * 2) {
-      notyf.success(`JACKPOT : ${totalPrice}`);
+      notyf.success(`JACKPOT : ${formatAmount(totalPrice)}`);
     } else if (totalPrice >= betval) {
-      notyf.success(`EPIC WIN: ${totalPrice}`);
+      notyf.success(`EPIC WIN: ${formatAmount(totalPrice)}`);
     } else {
-      notyf.success(`YOU GAIN : ${totalPrice}`);
+      notyf.success(`YOU GAIN : ${formatAmount(totalPrice)}`);
     }
 
     if (totalPrice >= maxBetWin.profit) {
@@ -286,9 +287,10 @@ const App = () => {
     });
 
 
+
     setTimeout(() => {
       setBetPlaced(false);
-    
+
     }, 100)
 
 
@@ -334,9 +336,9 @@ const App = () => {
     <div>
       <NavBar balance={balance} maxBalance={maxBalance} refillCount={refillCount} />
 
-      <section className='flex gap-5 md-gap-10 flex-col-reverse md:flex-row'>
+      <section className='flex gap-5 xl-gap-10 flex-col-reverse xl:flex-row'>
         {/* FORM SECTION */}
-        <div className='w-full h-[50vh] flex justify-center items-center md:h-[88vh] md:w-[30%]'>
+        <div className='w-full h-[50vh] flex justify-center items-center xl:h-[88vh] xl:w-[30%]'>
           <Form
             setBetval={setBetval}
             setBombs={setBombs}
@@ -351,7 +353,7 @@ const App = () => {
         </div>
 
         {/* CARD SECTION */}
-        <div className='max-w-[100vw] bg-Input md:px-5 md:py-5 md:mt-[1.5rem] mx-auto md:mr-[9rem] rounded-md mt-5'>
+        <div className='max-w-[100vw] bg-Input xl:px-5 xl:py-5 xl:mt-[1.5rem] mx-auto xl:mr-[9rem] rounded-xl mt-5'>
           <div className='max-w-full grid grid-cols-5 gap-3'>
             {cards.map((card) => (
               <Card

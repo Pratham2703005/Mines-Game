@@ -7,14 +7,14 @@ const Card = ({ card, handleChoice, flipped }) => {
   };
 
   return (
-    <div className='card h-[3.5rem] w-[3rem] md:h-24 md:w-24'>
+    <div className='card h-[3.5rem] w-[3rem] xl:h-24 xl:w-24'>
       <div className={flipped ? 'flipped' : ''}>
         <div className="relative w-full h-full front rounded-lg border-[2px] border-solid border-white">
           <div className="w-full h-full flex justify-center items-center">
             <img
               src={card.src}
               alt="card-front"
-              className="block md:w-[3.75rem] w-[1.5rem] mix-blend-color-burn object-contain"
+              className="block xl:w-[3.75rem] w-[1.5rem] mix-blend-color-burn object-contain"
             />
           </div>
         </div>
