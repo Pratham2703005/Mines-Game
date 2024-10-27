@@ -68,7 +68,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
             onFocus={(e) => e.target.select()}
             onChange={(e) => setBetval(prev => prev === 0 ? prev + Number(e.target.value) : Number(e.target.value))}
             onInput={(e) => e.target.value = e.target.value.replace(/^0+/, '')}
-            className="w-full px-3 py-2 text-white bg-[rgb(15,33,46)] border-r border-[#2a3544] focus:outline-none rounded"
+            className="w-full px-3 py-2 text-white bg-[rgb(15,33,46)] border-[1.5px] border-[#2a3544] focus:outline-none rounded hover:border-[#557086]"
             placeholder="0.00000000"
             disabled={betPlaced}
           />
@@ -77,7 +77,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
           type="button"
           onClick={() => setBetval(Math.floor(balance / 2))}
           disabled={betPlaced}
-          className="px-4 py-2 bg-[rgb(47,69,83)] text-gray-300 border-r border-[#2a3544] hover:bg-[#161e2a] transition-colors"
+          className="px-4 py-2 bg-[rgb(47,69,83)] text-white border-r border-[#2a3544] hover:bg-[#557086] transition-colors"
         >
           ½
         </button>
@@ -85,7 +85,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
           type="button"
           onClick={() => setBetval(Math.floor(balance))}
           disabled={betPlaced}
-          className="px-4 py-2 bg-[rgb(47,69,83)] text-gray-300 hover:bg-[#161e2a] transition-colors rounded"
+          className="px-4 py-2 bg-[rgb(47,69,83)] text-white hover:bg-[#557086] transition-colors rounded"
         >
           2×
         </button>
@@ -95,7 +95,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
 
       <>
         <div className="text-gray-400 my-1 ">Mines</div>
-        <div className="relative w-full shadow-customBox border-[rgb(47,69,83)] border-[1px]">
+        <div className="relative w-full shadow-customBox border-[rgb(47,69,83)] border-[1.5px] hover:border-[#557086]">
           <select
             id="numMines"
             value={bombs}

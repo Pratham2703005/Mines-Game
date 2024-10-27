@@ -1,5 +1,5 @@
 import React, { useState ,useEffect} from 'react';
-import { BarChart, User, BookOpen, UserCircle, Settings, Bell, Lock, LogOut, X, Menu, Sun, Moon, ArrowLeft } from 'lucide-react';
+import { BarChart, User, BookOpen, UserCircle, Settings, ReceiptText, Lock, LogOut, X, Menu, Sun, Moon, ArrowLeft } from 'lucide-react';
 import StatsContent from './MenuContent/StatsContent';
 import Guide from './MenuContent/Guide';
 
@@ -9,7 +9,7 @@ const menuOptions = [
   { label: 'Guide', icon: BookOpen },
   { label: 'Account', icon: UserCircle },
   { label: 'Settings', icon: Settings },
-  { label: 'Notifications', icon: Bell },
+  { label: 'My Bets', icon: ReceiptText},
   { label: 'Privacy', icon: Lock },
   { label: 'Logout', icon: LogOut },
 ];

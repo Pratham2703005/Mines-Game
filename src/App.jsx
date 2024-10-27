@@ -5,6 +5,7 @@ import Card from './components/Card';
 import Form from './components/Form';
 import NavBar from './components/NavBar';
 import { formatAmount } from './components/utility/FormatAmount';
+import queueInstance from './components/utility/queue';
 
 const bombImage = { src: './assets/bomb.png', matched: false };
 const diamondImage = { src: './assets/diamond.png', matched: false };
@@ -116,7 +117,6 @@ const App = () => {
   };
 
   const handleChoice = (card) => {
-    // Only allow card selection if bet is placed and no bomb has been hit
     if (betPlaced && !bombHit) {
       setChosen(card);
     }
@@ -130,7 +130,7 @@ const App = () => {
         let TP = turned * increment;
         TP *= parseInt(betval);
         let totalPrice = parseFloat(TP.toFixed(2))
-
+        queueInstance.enqueue({betval, bombs, mineOpen, profit:totalPrice, win:'false' })
         if (totalPrice >= maxBetLoose.lostAmount || (betval > maxBetLoose.betVal && betval > maxBetLoose.lostAmount)) {
           setMaxBetLoose({
             betVal: betval,
@@ -222,7 +222,7 @@ const App = () => {
     TP *= parseInt(betval);
     let totalPrice = parseFloat(TP.toFixed(2))
 
-
+    queueInstance.enqueue({betval, bombs, mineOpen, profit:totalPrice, win:'true' })
 
     if (totalPrice !== 0) {
       setBetWin(prev => {
