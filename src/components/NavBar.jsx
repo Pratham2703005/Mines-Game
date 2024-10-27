@@ -1,6 +1,6 @@
 import React from 'react';
 import PopupMenuComponent from './PopupMenuComponent';
-import { formatAmount } from '../utility';
+import { formatAmount } from './utility/FormatAmount';
 
 const NavBar = ({ balance }) => {
   return (

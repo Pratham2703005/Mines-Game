@@ -17,6 +17,9 @@ export default {
         Input: 'rgb(19 33 50)',
         BetButton: 'rgb(2 230 3)',
       },
+      boxShadow:{
+        customBox : '0 1px 3px 0 rgba(0,0,0,2), 0 1px 2px 0 rgba(0,0,0,12)'
+      }
     },
   },
   plugins: [],

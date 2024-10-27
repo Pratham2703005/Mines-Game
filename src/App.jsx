@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 import Card from './components/Card';
 import Form from './components/Form';
 import NavBar from './components/NavBar';
-import { formatAmount } from './utility';
+import { formatAmount } from './components/utility/FormatAmount';
 
 const bombImage = { src: './assets/bomb.png', matched: false };
 const diamondImage = { src: './assets/diamond.png', matched: false };
@@ -24,7 +23,6 @@ const App = () => {
   const [betval, setBetval] = useState(10);
   const [betPlaced, setBetPlaced] = useState(false);
   const [increment, setIncrement] = useState(0);
-  const [refillCount, setRefillCount] = useState(0); // Track refills
   const [maxBalance, setMaxBalance] = useState(1000); // Track max balance
   const [betCount, setBetCount] = useState(0);
   const [betWin, setBetWin] = useState(0);
@@ -68,7 +66,6 @@ const App = () => {
 
   useEffect(() => {       //Retrieval of data from localStorage
     const storedBalance = localStorage.getItem('balance');
-    const storedRefillCount = localStorage.getItem('refillCount');
     const storedMaxBalance = localStorage.getItem('maxBalance');
     const storedBetCount = localStorage.getItem('BetsMade');
     const storedBetWins = localStorage.getItem('Wins');
@@ -80,7 +77,6 @@ const App = () => {
     const storedcurrLosStreak = localStorage.getItem('CurrLosStreak');
     const storedMaxLosStreak = localStorage.getItem('MaxLosStreak');
 
-
     if (storedcurrWinStreak) setCurrWinStreak(parseInt(storedcurrWinStreak));
     if (storedMaxWinStreak) setMaxWinStreak(parseInt(storedMaxWinStreak));
     if (storedcurrLosStreak) setCurrLosStreak(parseInt(storedcurrLosStreak));
@@ -91,7 +87,6 @@ const App = () => {
     if (storedBetWins) setBetWin(parseInt(storedBetWins));
     if (storedBetCount) setBetCount(parseInt(storedBetCount));
     if (storedBalance) setBalance(parseFloat(storedBalance));
-    if (storedRefillCount) setRefillCount(parseInt(storedRefillCount));
     if (storedMaxBalance) setMaxBalance(parseFloat(storedMaxBalance));
 
     if (!storedBalance) localStorage.setItem('balance', 1000); // Set default balance to 1000 if not present
@@ -170,7 +165,7 @@ const App = () => {
             localStorage.setItem('MineOpen', 0);
             return 0;
           })
-        }, 1000);
+        }, 500);
 
 
       } else {
@@ -306,37 +301,13 @@ const App = () => {
 
   };
 
-  const handleRefill = () => {       // When want to reinvest money
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You want to refill your balance",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, refill!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setBetval(0);
-        setBalance(1000);
-        setRefillCount(prev => prev + 1);
-        localStorage.setItem('balance', 1000);
-        localStorage.setItem('refillCount', refillCount + 1);
-
-        Swal.fire({
-          title: "Done!",
-          text: "Your balance has been refilled.",
-          icon: "success"
-        });
-      }
-    });
-  };
+  
 
   return (
     <div>
-      <NavBar balance={balance} maxBalance={maxBalance} refillCount={refillCount} />
+      <NavBar balance={balance}/>
 
-      <section className='flex gap-5 xl-gap-10 flex-col-reverse xl:flex-row'>
+      <section className='flex gap-0 xl:gap-5 flex-col-reverse xl:flex-row'>
         {/* FORM SECTION */}
         <div className='w-full h-[50vh] flex justify-center items-center xl:h-[88vh] xl:w-[30%]'>
           <Form
@@ -348,12 +319,12 @@ const App = () => {
             bombs={bombs}
             betPlaced={betPlaced}
             handleSubmit={handleSubmit}
-            handleRefill={handleRefill}
+            setBalance={setBalance}
           />
         </div>
 
         {/* CARD SECTION */}
-        <div className='max-w-[100vw] bg-Input xl:px-5 xl:py-5 xl:mt-[1.5rem] mx-auto xl:mr-[9rem] rounded-xl mt-5'>
+        <div className='max-w-[100vw] bg-[rgb(19,33,46)] xl:px-5 xl:py-5 xl:mt-[1.5rem] mx-auto xl:mr-[9rem] rounded-xl mt-5'>
           <div className='max-w-full grid grid-cols-5 gap-3'>
             {cards.map((card) => (
               <Card

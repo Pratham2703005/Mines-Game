@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import StatsPie from './StatsPie';
-import { formatAmount } from '../../utility';
+import { formatAmount } from '../utility/FormatAmount';
 
 const StatsContent = () => {
     // Retrieve other data from local storage
@@ -35,7 +35,7 @@ const StatsContent = () => {
     const losRatio = betCount > 0 ? ((losCount / betCount) * 100).toFixed(2) : 0;
     const noResultRatio = parseFloat(100 - losRatio - winRatio).toFixed(2);
     return (
-        <div className="p-6 bg-gray-200 text-black rounded-lg shadow-xl max-w-lg mx-auto mt-5 mb-5">
+        <div className="p-6 bg-gray-200 text-black rounded-lg shadow-xl max-w-lg mx-auto mt-5 mb-5 select-none">
             <h1 className="text-3xl font-bold mb-4 text-center">Game Stats</h1>
             <div className='z-50 flex flex-col items-center justify-center h-[50%] overflow-hidden'>
                 {/* Heading */}
