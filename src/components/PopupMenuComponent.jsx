@@ -2,14 +2,15 @@ import React, { useState ,useEffect} from 'react';
 import { BarChart, User, BookOpen, UserCircle, Settings, ReceiptText, Lock, LogOut, X, Menu, Sun, Moon, ArrowLeft } from 'lucide-react';
 import StatsContent from './MenuContent/StatsContent';
 import Guide from './MenuContent/Guide';
+import MyBets from './MenuContent/MyBets';
 
 const menuOptions = [
-  { label: 'Statistics', icon: BarChart },
   { label: 'Profile', icon: User },
+  { label: 'My Bets', icon: ReceiptText},
+  { label: 'Statistics', icon: BarChart },
   { label: 'Guide', icon: BookOpen },
   { label: 'Account', icon: UserCircle },
   { label: 'Settings', icon: Settings },
-  { label: 'My Bets', icon: ReceiptText},
   { label: 'Privacy', icon: Lock },
   { label: 'Logout', icon: LogOut },
 ];
@@ -135,6 +136,8 @@ const PopupMenuComponent = () => {
       setLargeWindowContent(<StatsContent/>)
     }else if(option.label === 'Guide' ){
       setLargeWindowContent(<Guide/>)
+    }else if(option.label === 'My Bets'){
+      setLargeWindowContent(<MyBets/>)
     }
     else{
       setLargeWindowContent(

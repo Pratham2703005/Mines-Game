@@ -1,6 +1,6 @@
 // utils/queue.js
 class LimitedQueue {
-    constructor(limit = 50) {
+    constructor(limit = 250) {
         if (LimitedQueue.instance) return LimitedQueue.instance; // Singleton pattern
 
         this.limit = limit;
