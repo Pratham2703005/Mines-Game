@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-
+import axios from 'axios';
 
 const SERVICE_ID = 'service_9kztqyf';
 const TEMPLATE_ID = 'template_tlnqn1a';
 const USER_ID = 'UBEPZL3oALdYJxdDT';
-
+const ABSTRACT_API_KEY = '9c5305893dee40e48921d5fa15ee5ebf'; 
 const HelpSection = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -20,21 +20,38 @@ const HelpSection = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const verifyEmail = async (email) => {
+    try {
+      const response = await axios.get(`https://emailvalidation.abstractapi.com/v1/?api_key=${ABSTRACT_API_KEY}&email=${email}`);
+      return response.data.deliverability === 'DELIVERABLE';
+    } catch (error) {
+      console.error('Error verifying email:', error);
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const isEmailValid = await verifyEmail(formData.email);
+    if (!isEmailValid) {
+      toast.error('Invalid email address. Please check and try again.');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-        from_name: formData.name, // User ka naam
-        from_email: formData.email, // User ka email
-        message: formData.message // User ka message
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message
       }, USER_ID);
-      toast.success('Message sent successfully. We\'ll get back to you soon!'); 
-      setFormData({ name: '', email: '', message: '' }); 
+      toast.success('Message sent successfully. We\'ll get back to you soon!');
+    //   setFormData({ name: '', email: '', message: '' });
     } catch (error) {
       console.error('Error sending email:', error);
-      toast.error('Error sending message. Please try again later.'); 
+      toast.error('Error sending message. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
