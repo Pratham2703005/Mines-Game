@@ -1,18 +1,19 @@
 import React, { useState ,useEffect} from 'react';
-import { BarChart, User, BookOpen, UserCircle, Settings, ReceiptText, Lock, LogOut, X, Menu, Sun, Moon, ArrowLeft } from 'lucide-react';
+import { BarChart, Swords, BookOpen, UserCircle, Settings, ReceiptText, MessageCircleQuestion, LogOut, X, Menu, Sun, Moon, ArrowLeft } from 'lucide-react';
 import StatsContent from './MenuContent/StatsContent';
 import Guide from './MenuContent/Guide';
 import MyBets from './MenuContent/MyBets';
+import LargeWindow from './MenuContent/LargeWindow';
+import HelpSection from './MenuContent/HelpSection';
 
 const menuOptions = [
-  { label: 'Profile', icon: User },
+  { label: 'Guide', icon: BookOpen },
   { label: 'My Bets', icon: ReceiptText},
   { label: 'Statistics', icon: BarChart },
-  { label: 'Guide', icon: BookOpen },
-  { label: 'Account', icon: UserCircle },
+  { label: 'Challenges', icon: Swords },
   { label: 'Settings', icon: Settings },
-  { label: 'Privacy', icon: Lock },
-  { label: 'Logout', icon: LogOut },
+  { label: 'About me', icon: UserCircle },
+  { label: 'Help', icon: MessageCircleQuestion },
 ];
 
 const MenuButton = ({ onClick, isVisible }) => (
@@ -54,29 +55,6 @@ const PopupMenu = ({ show, setShow, title, options, onOptionClick }) => {
   );
 };
 
-const LargeWindow = ({ show, setShow, title, children, onBack }) => {
-  if (!show) return null;
-
-  return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="absolute inset-0 bg-black/50 z-40" onClick={() => setShow(false)} />
-      <div className="relative w-11/12 md:w-1/3 h-[75vh] bg-white rounded-md z-50 overflow-hidden border border-gray-200">
-        <div className="flex justify-between items-center pt-3 pb-2 px-6 border-b border-gray-200 bg-gray-100">
-          <div className="flex items-center">
-            <button onClick={onBack} className="mr-2">
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
-            </button>
-            <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-          </div>
-          <X className="w-5 h-5 cursor-pointer text-gray-600" onClick={() => setShow(false)} />
-        </div>
-        <div className="h-full max-h-[65vh] overflow-y-auto p-6 bg-white">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-};
 const ThemeSwitcher = () => {
   const [theme, setTheme] = useState('light'); // Simulating theme state
 
@@ -130,22 +108,27 @@ const PopupMenuComponent = () => {
   const handleOptionClick = (option) => {
     setShowMenu(false);
     setLargeWindowTitle(option.label);
+    
     if (option.label === 'Settings') {
       setLargeWindowContent(<SettingsContent />);
-    } else if(option.label === 'Statistics'){
-      setLargeWindowContent(<StatsContent/>)
-    }else if(option.label === 'Guide' ){
-      setLargeWindowContent(<Guide/>)
-    }else if(option.label === 'My Bets'){
-      setLargeWindowContent(<MyBets/>)
+    } else if (option.label === 'Statistics') {
+      setLargeWindowContent(<StatsContent />);
+    } else if (option.label === 'Guide') {
+      setLargeWindowContent(<Guide />);
+    } else if (option.label === 'My Bets') {
+      setLargeWindowContent(<MyBets />);
+    } else if(option.label === 'Help'){
+      setLargeWindowContent(<HelpSection />)
     }
-    else{
+    else {
       setLargeWindowContent(
         <p className="text-gray-600">This is the {option.label} window. Content coming soon!</p>
       );
     }
+
     setShowLargeWindow(true);
   };
+  
 
   const handleBack = () => {
     setShowLargeWindow(false);
