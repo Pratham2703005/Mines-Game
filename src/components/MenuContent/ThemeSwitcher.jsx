@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Flame, Leaf, Droplet, Moon, Cloud } from 'lucide-react';
+import { Sun, Flame, Leaf, Droplet, Moon, Cloud, Snowflake,Crown } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const THEME_STORAGE_KEY = 'user-theme-preference';
@@ -13,6 +13,8 @@ const themes = [
         gradient: 'from-blue-400 to-blue-600',
         lightText: true
     },
+    
+    
     {
         name: 'Bloody Red',
         icon: Flame,
@@ -27,6 +29,22 @@ const themes = [
         class: 'green',
         description: 'Natural and calming',
         gradient: 'from-green-500 to-green-700',
+        lightText: true
+    },
+    {
+        name: 'Royal Blue',
+        icon: Crown,
+        class: 'royal-blue',
+        description: 'Elegant and majestic',
+        gradient: 'from-blue-600 to-blue-800', // Gradient for Royal Blue theme
+        lightText: true
+    },
+    {
+        name: 'Blossom',
+        icon: Snowflake,
+        class: 'blossom',
+        description: 'Soft and pastel',
+        gradient: 'from-purple-300 to-pink-300',
         lightText: true
     },
     {
@@ -56,26 +74,20 @@ const themes = [
 ];
 
 const ThemeSwitcher = () => {
-    // Initialize state from localStorage or default to 'root'
     const [activeTheme, setActiveTheme] = useState(() => {
         return localStorage.getItem(THEME_STORAGE_KEY) || 'root';
     });
 
     const handleThemeChange = (themeClass) => {
-        // Remove all existing theme classes
-        document.documentElement.classList.remove('root', 'red', 'green', 'orange', 'black', 'grey');
-        // Add the new theme class
+        document.documentElement.classList.remove('root', 'red', 'green', 'orange', 'black', 'grey', 'blossom', 'royal-blue');
         document.documentElement.classList.add(themeClass);
-        // Update state
         setActiveTheme(themeClass);
-        // Save to localStorage
         localStorage.setItem(THEME_STORAGE_KEY, themeClass);
     };
 
-    // Apply the theme on initial render
     useEffect(() => {
         handleThemeChange(activeTheme);
-    }, [activeTheme]); // Update the theme if activeTheme changes
+    }, [activeTheme]);
 
     return (
         <motion.div 
