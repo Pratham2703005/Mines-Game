@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
   Box,
+  CircularProgress,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import queueInstance from '../utility/queue';
 
-const messages = queueInstance.getQueue();
-console.log(messages)
 const Message = ({ data }) => {
-  const isWin = data.win === 'true'; // Convert string 'true'/'false' to boolean
+  const isWin = data.win === 'true';
   const borderColor = isWin ? '#4caf50' : '#f44336';
   
   return (
@@ -33,7 +32,7 @@ const Message = ({ data }) => {
         id={`panel-${data.betval}-${data.profit}-header`}
         sx={{
           backgroundColor: 'white',
-          borderColor: borderColor, // Apply borderColor directly
+          borderColor: borderColor,
           borderWidth: '2px',
           borderStyle: 'solid',
           borderRadius: '8px',
@@ -44,7 +43,7 @@ const Message = ({ data }) => {
           {isWin ? `Profit : $${data.profit.toFixed(2)}` : `Loss : $${parseFloat(data.profit + data.betval).toFixed(2)}`}
         </Typography>
       </AccordionSummary>
-      <AccordionDetails sx={{ backgroundColor: '#f5f5f5', borderRadius: '0 0 8px 8px',marginBottom:'8px' }}>
+      <AccordionDetails sx={{ backgroundColor: '#f5f5f5', borderRadius: '0 0 8px 8px', marginBottom: '8px' }}>
         <Box>
           <Typography><strong>Bet Value:</strong> ${data.betval.toFixed(2)}</Typography>
           <Typography><strong>Bombs:</strong> {data.bombs}</Typography>
@@ -53,33 +52,76 @@ const Message = ({ data }) => {
           <Typography><strong>Date:</strong> {new Date(data.timestamp).toLocaleDateString()}</Typography>
           <Typography><strong>Time:</strong> {new Date(data.timestamp).toLocaleTimeString()}</Typography>
         </Box>
-
       </AccordionDetails>
     </Accordion>
   );
 };
 
-
 const NotificationMessages = () => {
+  const [messages, setMessages] = useState([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const observer = useRef();
+  const ITEMS_PER_PAGE = 10;
+
+  const lastMessageElementRef = useCallback(node => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1);
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore]);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      setLoading(true);
+      const allMessages = queueInstance.getQueue();
+      const start = page * ITEMS_PER_PAGE;
+      const end = start + ITEMS_PER_PAGE;
+      const newMessages = allMessages.slice(start, end);
+      
+      setMessages(prevMessages => [...prevMessages, ...newMessages]);
+      setHasMore(end < allMessages.length);
+      setLoading(false);
+    };
+
+    fetchMessages();
+  }, [page]);
+
   return (
     <Box sx={{ width: '100%', maxWidth: '400px', margin: '0 auto', padding: '2px' }}>
       <Typography variant="h4" fontWeight="bold" marginBottom={2}>
         Recent Bets
       </Typography>
 
-      {messages.slice().reverse().map((msg, index) => (
-        <Message key={index} data={msg} />
+      {messages.map((msg, index) => (
+        <div key={index} ref={index === messages.length - 1 ? lastMessageElementRef : null}>
+          <Message data={msg} />
+        </div>
       ))}
 
+      {loading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+          <CircularProgress />
+        </Box>
+      )}
+
+      {/* {!hasMore && messages.length > 0 && (
+        <Typography textAlign="center" my={2}>
+          No more bets to load
+        </Typography>
+      )} */}
     </Box>
   );
 };
 
 const MyBets = () => {
   return (
-
     <NotificationMessages />
-
   );
 };
 
