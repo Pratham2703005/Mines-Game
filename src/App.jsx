@@ -92,6 +92,14 @@ const App = () => {
 
     if (!storedBalance) localStorage.setItem('balance', 1000); // Set default balance to 1000 if not present
     if (!storedMaxBalance) localStorage.setItem('maxBalance', 1000);
+
+    const savedTheme = localStorage.getItem('user-theme-preference');
+        if (!savedTheme) {
+            localStorage.setItem('user-theme-preference', 'root');
+            document.documentElement.classList.add('root'); // Set default theme
+        } else {
+            document.documentElement.classList.add(savedTheme);
+        }
   }, []);
 
   useEffect(() => {
@@ -324,7 +332,7 @@ const App = () => {
         </div>
 
         {/* CARD SECTION */}
-        <div className='max-w-[100vw] bg-[rgb(19,33,46)] xl:px-5 xl:py-5 xl:mt-[1.5rem] mx-auto xl:mr-[9rem] rounded-xl mt-5'>
+        <div style={{ backgroundColor: 'var(--sectionBg)' }} className='max-w-[100vw] xl:px-5 xl:py-5 xl:mt-[1.5rem] mx-auto xl:mr-[9rem] rounded-xl mt-5'>
           <div className='max-w-full grid grid-cols-5 gap-3'>
             {cards.map((card) => (
               <Card

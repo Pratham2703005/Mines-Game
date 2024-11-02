@@ -1,24 +1,26 @@
-import React, { useState ,useEffect} from 'react';
-import { BarChart, Swords, BookOpen, UserCircle, Settings, ReceiptText, MessageCircleQuestion, LogOut, X, Menu, Sun, Moon, ArrowLeft } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { BarChart, Swords, BookOpen, UserCircle, Settings, ReceiptText, MessageCircleQuestion, X, Menu, Sun, Moon } from 'lucide-react';
 import StatsContent from './MenuContent/StatsContent';
 import Guide from './MenuContent/Guide';
 import MyBets from './MenuContent/MyBets';
 import LargeWindow from './MenuContent/LargeWindow';
 import HelpSection from './MenuContent/HelpSection';
+import About from './MenuContent/About';
+import ThemeSwitcher from './MenuContent/ThemeSwitcher';
 
 const menuOptions = [
   { label: 'Guide', icon: BookOpen },
   { label: 'My Bets', icon: ReceiptText},
   { label: 'Statistics', icon: BarChart },
   { label: 'Challenges', icon: Swords },
-  { label: 'Settings', icon: Settings },
+  { label: 'Theme', icon: Sun },
   { label: 'About me', icon: UserCircle },
   { label: 'Help', icon: MessageCircleQuestion },
 ];
 
 const MenuButton = ({ onClick, isVisible }) => (
   <button 
-    className={`p-2 bg-[rgb(19,33,51)] mt-2 border rounded-md text-foreground hover:bg-muted transition-colors text-white ${isVisible ? '' : 'hidden'}`}
+    className={`p-2 bg-NavBar mt-2 border rounded-md text-foreground hover:bg-muted transition-colors text-white ${isVisible ? '' : 'hidden'}`}
     onClick={onClick}
   >
     <Menu className="h-4 w-4" />
@@ -55,35 +57,6 @@ const PopupMenu = ({ show, setShow, title, options, onOptionClick }) => {
   );
 };
 
-const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState('light'); // Simulating theme state
-
-  return (
-    <div className="flex items-center space-x-4">
-      <button
-        onClick={() => setTheme('light')}
-        className={`p-2 rounded-md ${theme === 'light' ? 'bg-gray-200' : 'bg-white'}`}
-      >
-        <Sun className="h-[1.2rem] w-[1.2rem] text-gray-600" />
-      </button>
-      <button
-        onClick={() => setTheme('dark')}
-        className={`p-2 rounded-md ${theme === 'dark' ? 'bg-gray-200' : 'bg-white'}`}
-      >
-        <Moon className="h-[1.2rem] w-[1.2rem] text-gray-600" />
-      </button>
-    </div>
-  );
-};
-
-const SettingsContent = () => (
-  <div className="space-y-4">
-    <h3 className="text-lg font-medium text-gray-800">Theme Settings</h3>
-    <p className="text-gray-600">Choose between light and dark mode:</p>
-    <ThemeSwitcher />
-  </div>
-);
-
 const PopupMenuComponent = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showLargeWindow, setShowLargeWindow] = useState(false);
@@ -109,8 +82,8 @@ const PopupMenuComponent = () => {
     setShowMenu(false);
     setLargeWindowTitle(option.label);
     
-    if (option.label === 'Settings') {
-      setLargeWindowContent(<SettingsContent />);
+    if (option.label === 'Theme') {
+      setLargeWindowContent(<ThemeSwitcher />);
     } else if (option.label === 'Statistics') {
       setLargeWindowContent(<StatsContent />);
     } else if (option.label === 'Guide') {
@@ -119,6 +92,8 @@ const PopupMenuComponent = () => {
       setLargeWindowContent(<MyBets />);
     } else if(option.label === 'Help'){
       setLargeWindowContent(<HelpSection />)
+    }else if(option.label === 'About me'){
+      setLargeWindowContent(<About/>)
     }
     else {
       setLargeWindowContent(

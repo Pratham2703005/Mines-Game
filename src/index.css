@@ -2,8 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
+/*Default*/
+:root{
+  --sectionBg : rgb(19,33,46);
+  --cardColor : rgb(8 ,30, 52);
+  --navBg : rgb(28 43 60);
+  --FormColor : rgb(33, 55, 67);
+  --FormInput : rgb(15,33,46);
+  --FormInputBtn : rgb(47,69,83);
+  --FormInputBorder : #2a3544;
+  --FormInputBtnHover : #557086;
+}
+/*Red*/
+.red{ 
+  --sectionBg: rgb(46, 7, 7);
+  --cardColor: rgb(60, 8, 8);
+  --navBg: rgb(72, 10, 10); 
+  --FormColor: rgb(85, 15, 15);
+  --FormInput: rgb(92, 20, 20); 
+  --FormInputBtn: rgb(120, 25, 25); 
+  --FormInputBorder: rgb(150, 30, 30);
+  --FormInputBtnHover: rgb(180, 40, 40); 
+} 
+ /*Green*/
+.green {
+  --sectionBg: rgb(10, 25, 10);
+  --cardColor: rgb(5, 40, 5);
+  --navBg: rgb(15, 50, 15);
+  --FormColor: rgb(20, 60, 20);
+  --FormInput: rgb(10, 40, 10);
+  --FormInputBtn: rgb(30, 70, 30);
+  --FormInputBorder: rgb(20, 50, 20);
+  --FormInputBtnHover: rgb(40, 90, 40);
+} 
+ /*Magenta*/
+.magenta {
+  --sectionBg: rgb(30, 0, 30);
+  --cardColor: rgb(50, 0, 50);
+  --navBg: rgb(40, 0, 40);
+  --FormColor: rgb(60, 0, 60);
+  --FormInput: rgb(45, 0, 45);
+  --FormInputBtn: rgb(70, 0, 70);
+  --FormInputBorder: rgb(80, 0, 80);
+  --FormInputBtnHover: rgb(100, 0, 100);
+}
+/*Greyish*/
+.grey {
+  --sectionBg: rgb(20, 20, 20);
+  --cardColor: rgb(30, 30, 30);
+  --navBg: rgb(25, 25, 25);
+  --FormColor: rgb(35, 35, 35);
+  --FormInput: rgb(15, 15, 15);
+  --FormInputBtn: rgb(50, 50, 50);
+  --FormInputBorder: rgb(40, 40, 40);
+  --FormInputBtnHover: rgb(60, 60, 60);
+} 
+/*light Black*/
+.black {
+  --sectionBg: rgb(10, 10, 10);
+  --cardColor: rgb(15, 15, 15);
+  --navBg: rgb(5, 5, 5);
+  --FormColor: rgb(20, 20, 20);
+  --FormInput: rgb(0, 0, 0);
+  --FormInputBtn: rgb(30, 30, 30);
+  --FormInputBorder: rgb(25, 25, 25);
+  --FormInputBtnHover: rgb(35, 35, 35);
+} 
+/*orange-brown*/
+.orange {
+  --sectionBg: rgb(30, 20, 0);
+  --cardColor: rgb(40, 25, 0);
+  --navBg: rgb(25, 15, 0);
+  --FormColor: rgb(40, 30, 0);
+  --FormInput: rgb(35, 20, 0);
+  --FormInputBtn: rgb(60, 40, 0);
+  --FormInputBorder: rgb(50, 30, 0);
+  --FormInputBtnHover: rgb(70, 45, 0);
+}
+
+
+
+
+
 body{
-  background-color: rgb(19,33,46);
+  background-color: var(--sectionBg);
 }
 ::-webkit-scrollbar {
   width: 10px; /* Width of the scrollbar */

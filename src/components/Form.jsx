@@ -50,14 +50,14 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
   };
 
   return (
-    <form onSubmit={handleSubmit} className='bg-[rgb(33,55,67)] rounded-lg shadow-lg flex flex-col items-start xl:min-w-[25.5rem] max-w-[332px] xl:h-[76vh] xl:ml-[310px] px-[1.25rem] py-[1.75rem]'>
+    <form onSubmit={handleSubmit} className='bg-FormColor rounded-lg shadow-lg flex flex-col items-start xl:min-w-[25.5rem] max-w-[332px] xl:h-[76vh] xl:ml-[310px] px-[1.25rem] py-[1.75rem]'>
       <h1 className='text-white text-2xl font-bold mb-4 mx-auto'>MINES</h1>
 
       <div className="flex justify-between items-center mb-1 w-full">
         <span className="text-gray-400">Bet Amount</span>
         <span className="text-gray-400">$0.00</span>
       </div>
-      <div className="flex items-stretch w-full shadow-customBox border-[rgb(47,69,83)] border-[1px]">
+      <div className="flex items-stretch w-full shadow-customBox border-FormInputBtn border-[1px]">
         <div className="flex-1 relative ">
           <input
             id="betValue"
@@ -68,7 +68,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
             onFocus={(e) => e.target.select()}
             onChange={(e) => setBetval(prev => prev === 0 ? prev + Number(e.target.value) : Number(e.target.value))}
             onInput={(e) => e.target.value = e.target.value.replace(/^0+/, '')}
-            className="w-full px-3 py-2 text-white bg-[rgb(15,33,46)] border-[1.5px] border-[#2a3544] focus:outline-none rounded hover:border-[#557086]"
+            className="w-full px-3 py-2 text-white bg-FormInput border-[1.5px] border-FormInputBorder focus:outline-none rounded hover:border-FormInputBtnHover"
             placeholder="0.00000000"
             disabled={betPlaced}
           />
@@ -77,7 +77,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
           type="button"
           onClick={() => setBetval(Math.floor(balance / 2))}
           disabled={betPlaced}
-          className="px-4 py-2 bg-[rgb(47,69,83)] text-white border-r border-[#2a3544] hover:bg-[#557086] transition-colors"
+          className="px-4 py-2 bg-FormInputBtn text-white border-r border-FormInputBorder hover:bg-FormInputBtnHover transition-colors"
         >
           ½
         </button>
@@ -85,7 +85,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
           type="button"
           onClick={() => setBetval(Math.floor(balance))}
           disabled={betPlaced}
-          className="px-4 py-2 bg-[rgb(47,69,83)] text-white hover:bg-[#557086] transition-colors rounded"
+          className="px-4 py-2 bg-FormInputBtn text-white hover:bg-FormInputBtnHover transition-colors rounded"
         >
           2×
         </button>
@@ -95,12 +95,12 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
 
       <>
         <div className="text-gray-400 my-1 ">Mines</div>
-        <div className="relative w-full shadow-customBox border-[rgb(47,69,83)] border-[1.5px] hover:border-[#557086]">
+        <div className="relative w-full shadow-customBox border-FormInputBorder border-[1.5px] hover:border-FormInputBtnHover">
           <select
             id="numMines"
             value={bombs}
             onChange={(e) => setBombs(e.target.value)}
-            className="w-full px-3 py-2 text-white bg-[rgb(15,33,46)] appearance-none rounded focus:outline-none"
+            className="w-full px-3 py-2 text-white bg-FormInput appearance-none rounded focus:outline-none"
             disabled={betPlaced}
           >
             {Array.from({ length: 24 }, (_, i) => (

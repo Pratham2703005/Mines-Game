@@ -48,7 +48,7 @@ const HelpSection = () => {
         message: formData.message
       }, USER_ID);
       toast.success('Message sent successfully. We\'ll get back to you soon!');
-    //   setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', email: '', message: '' });
     } catch (error) {
       console.error('Error sending email:', error);
       toast.error('Error sending message. Please try again later.');
@@ -122,8 +122,9 @@ const styles = {
     position: 'relative',
     width: '100%',
     maxWidth: '450px',
-    padding: '30px',
-    borderRadius: '12px',
+    padding: '20px',
+    paddingTop: '30px' ,
+    borderRadius: '3px',
     boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
     overflow: 'hidden',
     backgroundColor: 'white',
@@ -171,11 +172,11 @@ const styles = {
     fontSize: '14px',
     fontWeight: 'bold',
     color: '#555',
-    marginBottom: '5px',
+    // marginBottom: '5px',
   },
   input: {
     padding: '12px 15px',
-    borderRadius: '8px',
+    borderRadius: '3px',
     border: '1px solid #ddd',
     fontSize: '16px',
     transition: 'all 0.3s ease',
@@ -187,7 +188,7 @@ const styles = {
   },
   textarea: {
     padding: '12px 15px',
-    borderRadius: '8px',
+    borderRadius: '3px',
     border: '1px solid #ddd',
     fontSize: '16px',
     resize: 'vertical',

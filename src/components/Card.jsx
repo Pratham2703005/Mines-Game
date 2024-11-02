@@ -20,7 +20,7 @@ const Card = ({ card, handleChoice, flipped }) => {
         </div>
         
         <div
-          className='back rounded-lg block border-[2px] border-solid border-white bg-[rgb(8,30,52)]'
+          className='back rounded-lg block border-[2px] border-solid border-white bg-CardColor'
           onClick={handleClick}
         ></div>
       </div>
