@@ -1,4 +1,3 @@
-// utils/queue.js
 class LimitedQueue {
     constructor(limit = 250) {
         if (LimitedQueue.instance) return LimitedQueue.instance; // Singleton pattern
@@ -14,6 +13,9 @@ class LimitedQueue {
         }
         this.queue.push(item);
         this.updateLocalStorage();
+        
+        // Trigger custom event for localStorage update
+        window.dispatchEvent(new Event('queueUpdated'));
     }
 
     dequeue() {
@@ -28,6 +30,10 @@ class LimitedQueue {
 
     getQueue() {
         return this.queue;
+    }
+
+    getLastItem() {
+        return this.queue[this.queue.length - 1];
     }
 }
 

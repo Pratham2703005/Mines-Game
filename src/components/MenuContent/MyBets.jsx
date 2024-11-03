@@ -13,7 +13,7 @@ import queueInstance from '../utility/queue';
 const Message = ({ data }) => {
   const isWin = data.win === 'true';
   const borderColor = isWin ? '#4caf50' : '#f44336';
-  
+
   return (
     <Accordion
       sx={{
@@ -79,11 +79,11 @@ const NotificationMessages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       setLoading(true);
-      const allMessages = queueInstance.getQueue();
+      const allMessages = queueInstance.getQueue().reverse(); // Reverse queue initially
       const start = page * ITEMS_PER_PAGE;
       const end = start + ITEMS_PER_PAGE;
       const newMessages = allMessages.slice(start, end);
-      
+
       setMessages(prevMessages => [...prevMessages, ...newMessages]);
       setHasMore(end < allMessages.length);
       setLoading(false);
@@ -99,7 +99,10 @@ const NotificationMessages = () => {
       </Typography>
 
       {messages.map((msg, index) => (
-        <div key={index} ref={index === messages.length - 1 ? lastMessageElementRef : null}>
+        <div
+          key={index}
+          ref={index === messages.length - 1 ? lastMessageElementRef : null}
+        >
           <Message data={msg} />
         </div>
       ))}
@@ -109,12 +112,6 @@ const NotificationMessages = () => {
           <CircularProgress />
         </Box>
       )}
-
-      {/* {!hasMore && messages.length > 0 && (
-        <Typography textAlign="center" my={2}>
-          No more bets to load
-        </Typography>
-      )} */}
     </Box>
   );
 };

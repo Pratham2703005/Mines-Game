@@ -60,7 +60,7 @@ export default function About() {
             Let's connect and create something amazing together!
           </Typography>
           <Box sx={{ margin: '10px 0', display: 'flex', flexWrap: 'wrap' }}>
-            {["C", "C++", "HTML", "CSS", "JavaScript", "React.js", "Node.js", "Express", "MongoDB", "Three.js", "R3F"].map((skill) => (
+            {["C", "C++", "HTML", "CSS", "JavaScript", "React.js","Tailwind" ,"Node.js", "Express", "MongoDB", "Three.js", "R3F"].map((skill) => (
               <Chip 
                 key={skill} 
                 label={skill} 

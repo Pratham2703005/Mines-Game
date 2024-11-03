@@ -5,45 +5,51 @@ const Guide = () => {
 
   const pages = [
     {
-      title: "Initial Balance",
-      content: "Your starting balance is $1000. This is the amount you can use to place bets in the game.",
-      image: "./GuideImage/Balance.png"
+      title: "Starting Balance",
+      content: "You begin with an initial balance of $1000. This is your starting point for the game, so play wisely and manage your bets to maximize your chances of winning big.",
+      image: "./GuideImage/1.png"
     },
     {
-      title: "Setting Betting Amount",
-      content: "Select your betting amount, starting at $10. Ensure it's within your available balance.",
-      image: "./GuideImage/SetAmount.png"
+      title: "Setting the Bet Amount",
+      content: "Set your bet amount based on your balance. The bet limit ranges from a minimum of $10 up to your full balance. Choose an amount that balances risk with reward.",
+      image: "./GuideImage/2.png"
     },
     {
-      title: "Selecting Number of Mines",
-      content: "Choose the number of mines (bombs) between 1 and 24. The more mines you set, the higher the risk and the greater the reward.",
-      image: "./GuideImage/SetMines.png"
+      title: "Choosing the Number of Mines",
+      content: "Pick the number of mines for the game (let's call this number x). The higher the number of mines, the greater the risk—but also, the higher the potential rewards.",
+      image: "./GuideImage/3.png"
     },
     {
-      title: "Placing the Bet",
-      content: "After selecting your bet amount and the number of mines, click the 'Bet' button to place your bet. Once placed, it will turn red and say 'Cashout'.",
-      image: "./GuideImage/BetButton.png"
+      title: "Placing Your Bet",
+      content: "Click on the Bet button to start the game after setting your bet amount and number of mines. This action locks in your bet and sets up the game board.",
+      image: "./GuideImage/4.png"
     },
     {
-      title: "Playing the Game",
-      content: "In front of you are 25 cards. Some hide bombs, while others hide diamonds. Keep selecting cards to find diamonds, but hitting a bomb ends the game.",
-      image: "./GuideImage/CardsLayout.png"
+      title: "Understanding the Game Board",
+      content: "The board has 25 cards with x mines hidden beneath them. The rest are diamonds. Your goal is to uncover as many diamonds as you can while avoiding the mines.",
+      image: "./GuideImage/5.png"
     },
     {
-      title: "Cashing Out",
-      content: "Click 'Cashout' anytime to secure your winnings, based on the diamonds found and your bet amount.",
-      image: "./GuideImage/CashOut.png"
+      title: "Finding Diamonds",
+      content: "Each time you find a diamond, your reward increases. The more diamonds you uncover, the higher your total reward will be. Choose carefully to avoid the mines!",
+      image: "./GuideImage/6.png"
     },
     {
-      title: "Game Results",
-      content: "After cashing out or hitting a bomb, a popup shows your winnings or losses. Your balance is updated accordingly.",
-      image: "./GuideImage/popups.png"
+      title: "Cash Out Anytime",
+      content: "You have the option to cash out at any point during the game. If you feel satisfied with your reward, click Cash Out to secure your winnings and end the round.",
+      image: "./GuideImage/7.png"
     },
     {
-      title: "Refill Balance",
-      content: "If your balance drops to zero, don't worry! You can refill your balance back to $1000 by clicking the 'Refill Balance' button below. Keep playing and good luck!",
-      image: "./GuideImage/Refill.png"
+      title: "Risk of Losing",
+      content: "If you uncover a mine, the game ends immediately, and you lose your bet amount. Play carefully and keep your eyes on the diamonds to avoid this outcome.",
+      image: "./GuideImage/8.png"
+    },
+    {
+      title: "Low Balance Refill",
+      content: "If your balance becomes low, you can refill it to continue playing. Refilling helps you get back in the game if you hit a losing streak and need more funds.",
+      image: "./GuideImage/9.png"
     }
+    
   ];
 
   const nextPage = () => {
@@ -55,11 +61,11 @@ const Guide = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg min-h-[29rem] xl:min-h-[25.5rem] flex flex-col justify-between">
-      <div className="p-6 flex-grow">
-        <h1 className="text-center text-yellow-400 font-extrabold text-2xl xl:text-3xl mb-6">Mines Guide</h1>
+    <div className="max-w-4xl mx-auto text-gray-900 rounded-lg shadow-lg min-h-[29rem] xl:min-h-[25.5rem] flex flex-col justify-between">
+      <div className="p-6 flex-grow select-none">
+        {/* <h1 className="text-center text-yellow-400 font-extrabold text-2xl xl:text-3xl mb-6">Mines Guide</h1> */}
 
-        <div className="mb-6 flex-grow">
+        <div className="mb-2 flex-grow">
           <img 
             src={pages[currentPage].image} 
             alt={pages[currentPage].title} 
@@ -74,7 +80,7 @@ const Guide = () => {
         <button 
           onClick={prevPage} 
           disabled={currentPage === 0} 
-          className={`px-4 py-2 border rounded text-white border-gray-600 ${currentPage === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'}`}
+          className={`px-4 py-2 border rounded  text-gray-900 border-gray-600 ${currentPage === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700 hover:text-white'}`}
         >
           Prev
         </button>
@@ -82,7 +88,9 @@ const Guide = () => {
         <button 
           onClick={nextPage} 
           disabled={currentPage === pages.length - 1} 
-          className={`px-4 py-2 border rounded text-white border-gray-600 ${currentPage === pages.length - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'}`}
+          className={`px-4 py-2 border rounded text-gray-900 border-gray-600 ${currentPage === pages.length - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700 hover:text-white'
+            
+          }`}
         >
           Next
         </button>

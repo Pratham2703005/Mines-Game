@@ -209,12 +209,12 @@ const App = () => {
       setBetPlaced(true);
       const tmp = balance - betval;
       setBalance(parseFloat(tmp.toFixed(2)));
-      localStorage.setItem('balance', parseFloat(tmp.toFixed(2))); // Save updated balance in localStorage
+      localStorage.setItem('balance', parseFloat(tmp.toFixed(2))); 
       setIncrement(parseFloat(bombs * 0.04));
 
       setBetCount(prevCount => {
         const newCount = prevCount + 1;
-        localStorage.setItem('BetsMade', newCount); // Save updated bet count to localStorage
+        localStorage.setItem('BetsMade', newCount); 
         return newCount;
       });
       setMineOpen(() => {
@@ -222,6 +222,7 @@ const App = () => {
         return 0;
       })
     }
+    
   };
 
   const handleCashOut = () => {     // Handle Reward Time and resetting the position

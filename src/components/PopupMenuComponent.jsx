@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Swords, BookOpen, UserCircle, Settings, ReceiptText, MessageCircleQuestion, X, Menu, Sun, Moon } from 'lucide-react';
+import { BarChart, BookOpen, UserCircle, ReceiptText, MessageCircleQuestion, X, Menu, Sun } from 'lucide-react';
 import StatsContent from './MenuContent/StatsContent';
 import Guide from './MenuContent/Guide';
 import MyBets from './MenuContent/MyBets';
@@ -12,7 +12,6 @@ const menuOptions = [
   { label: 'Guide', icon: BookOpen },
   { label: 'My Bets', icon: ReceiptText},
   { label: 'Statistics', icon: BarChart },
-  { label: 'Challenges', icon: Swords },
   { label: 'Theme', icon: Sun },
   { label: 'About me', icon: UserCircle },
   { label: 'Help', icon: MessageCircleQuestion },
