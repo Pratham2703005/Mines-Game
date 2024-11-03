@@ -140,8 +140,8 @@ const App = () => {
         let totalPrice = parseFloat(TP.toFixed(2))
         queueInstance.enqueue({betval, bombs, mineOpen, profit:totalPrice, win:'false',timestamp: new Date().toISOString() })
         
-        const totalCurrLoss = parseFloat(totalPrice + betval).toFixed(2);
-        const totalPrevLoss = parseFloat(maxBetLoose.lostAmount + maxBetLoose.betVal).toFixed(2);
+        const totalCurrLoss = parseFloat((totalPrice + betval).toFixed(2));
+        const totalPrevLoss = parseFloat((maxBetLoose.lostAmount + maxBetLoose.betVal).toFixed(2));
         if(totalCurrLoss > totalPrevLoss || (totalCurrLoss === totalPrevLoss && bombs > maxBetLoose.mines )){
           setMaxBetLoose({
                 betVal: betval,
