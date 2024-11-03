@@ -139,13 +139,16 @@ const App = () => {
         TP *= parseInt(betval);
         let totalPrice = parseFloat(TP.toFixed(2))
         queueInstance.enqueue({betval, bombs, mineOpen, profit:totalPrice, win:'false',timestamp: new Date().toISOString() })
-        if (totalPrice >= maxBetLoose.lostAmount || (betval > maxBetLoose.betVal && betval > maxBetLoose.lostAmount)) {
+        
+        const totalCurrLoss = parseFloat(totalPrice + betval).toFixed(2);
+        const totalPrevLoss = parseFloat(maxBetLoose.lostAmount + maxBetLoose.betVal).toFixed(2);
+        if(totalCurrLoss > totalPrevLoss || (totalCurrLoss === totalPrevLoss && bombs > maxBetLoose.mines )){
           setMaxBetLoose({
-            betVal: betval,
-            mines: bombs,
-            minesOpen: mineOpen,
-            lostAmount: totalPrice
-          })
+                betVal: betval,
+                mines: bombs,
+                minesOpen: mineOpen,
+                lostAmount: totalPrice
+              })
         }
         setCurrLosStreak((prev) => {
           setCurrWinStreak(0);
@@ -265,8 +268,9 @@ const App = () => {
     } else {
       notyf.success(`YOU GAIN : ${formatAmount(totalPrice)}`);
     }
-
-    if (totalPrice >= maxBetWin.profit) {
+    const totalCurrWin = parseFloat(totalPrice + betval).toFixed(2);
+    const totalPrevWin = parseFloat(maxBetWin.profit + maxBetWin.betVal).toFixed(2);
+    if (totalCurrWin > totalPrevWin || (totalCurrWin === totalPrevWin && bombs > maxBetWin.mines)) {
       setMaxBetWin({
         betVal: betval,
         mines: bombs,
