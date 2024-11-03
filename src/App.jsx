@@ -44,26 +44,26 @@ const App = () => {
     const savedObject = localStorage.getItem('maxBetLoose');
     return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, lostAmount: 0 };
   })
-  // useEffect(() => {      // Disabling Inspect 
-  //   const handleKeyDown = (e) => {
-  //     if (e.key === 'F12') e.preventDefault();
-  //     if (e.ctrlKey && e.shiftKey && e.key === 'I') e.preventDefault();
-  //     if (e.ctrlKey && e.shiftKey && e.key === 'C') e.preventDefault();
-  //     if (e.ctrlKey && e.shiftKey && e.key === 'J') e.preventDefault();
-  //     if (e.ctrlKey && e.key === 'U') e.preventDefault();
-  //   };
+  useEffect(() => {      // Disabling Inspect 
+    const handleKeyDown = (e) => {
+      if (e.key === 'F12') e.preventDefault();
+      if (e.ctrlKey && e.shiftKey && e.key === 'I') e.preventDefault();
+      if (e.ctrlKey && e.shiftKey && e.key === 'C') e.preventDefault();
+      if (e.ctrlKey && e.shiftKey && e.key === 'J') e.preventDefault();
+      if (e.ctrlKey && e.key === 'U') e.preventDefault();
+    };
 
-  //   const disableRightClick = (e) => {
-  //     e.preventDefault();
-  //   };
+    const disableRightClick = (e) => {
+      e.preventDefault();
+    };
 
-  //   document.addEventListener('keydown', handleKeyDown);
-  //   document.addEventListener('contextmenu', disableRightClick);
-  //   return () => {
-  //     document.removeEventListener('keydown', handleKeyDown);
-  //     document.removeEventListener('contextmenu', disableRightClick);
-  //   };
-  // }, []);
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('contextmenu', disableRightClick);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('contextmenu', disableRightClick);
+    };
+  }, []);
 
   useEffect(() => {       //Retrieval of data from localStorage
     const storedBalance = localStorage.getItem('balance');
