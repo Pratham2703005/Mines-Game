@@ -1,5 +1,12 @@
 .card {
     perspective: 1000px;
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+}
+
+/* Add hover effect to the entire card */
+.card:hover {
+    transform: translateY(-5px) /* Scale up by 5% on hover */
+    
 }
 
 .card div {
@@ -12,19 +19,18 @@
 
 .card .front, .card .back {
     backface-visibility: hidden;
-    position: absolute; /* Keeping the position absolute for the proper flip */
+    position: absolute;
     width: 100%;
     height: 100%;
 }
 
 .card .front {
     transform: rotateY(90deg);
-    transition: all ease-in 0.2s; /* Flip the front initially */
+    transition: all ease-in 0.2s;
     opacity: 0;
 }
 
 .card .back {
-    /* transform: rotateY(0deg);  */
     transition: all ease-in 0.2s;
     transition-delay: 0.2s;
 }
@@ -37,6 +43,6 @@
 }
 
 .flipped .back {
-    transform: rotateY(90deg); 
-    transition-delay:0s ;/* Hide the back after flipping */
+    transform: rotateY(90deg);
+    transition-delay: 0s;
 }

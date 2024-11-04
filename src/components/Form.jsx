@@ -15,7 +15,7 @@ const BootstrapTooltip = styled(({ className, ...props }) => (
   },
 }));
 
-const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betPlaced, handleSubmit, setBalance }) => {
+const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, cashbutton, handleSubmit, setBalance }) => {
   const [refillCount, setRefillCount] = useState(0); // Track refills
 
   useEffect(() => {
@@ -70,13 +70,13 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
             onInput={(e) => e.target.value = e.target.value.replace(/^0+/, '')}
             className="w-full px-3 py-2 text-white bg-FormInput border-[1.5px] border-FormInputBorder focus:outline-none rounded hover:border-FormInputBtnHover"
             placeholder="0.00000000"
-            disabled={betPlaced}
+            disabled={cashbutton}
           />
         </div>
         <button
           type="button"
           onClick={() => setBetval(Math.floor(balance / 2))}
-          disabled={betPlaced}
+          disabled={cashbutton}
           className="px-4 py-2 bg-FormInputBtn text-white border-r border-FormInputBorder hover:bg-FormInputBtnHover transition-colors"
         >
           ½
@@ -84,7 +84,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
         <button
           type="button"
           onClick={() => setBetval(Math.floor(balance))}
-          disabled={betPlaced}
+          disabled={cashbutton}
           className="px-4 py-2 bg-FormInputBtn text-white hover:bg-FormInputBtnHover transition-colors rounded"
         >
           2×
@@ -101,7 +101,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
             value={bombs}
             onChange={(e) => setBombs(e.target.value)}
             className="w-full px-3 py-2 text-white bg-FormInput appearance-none rounded focus:outline-none"
-            disabled={betPlaced}
+            disabled={cashbutton}
           >
             {Array.from({ length: 24 }, (_, i) => (
               <option key={i + 1} value={i + 1}>{i + 1}</option>
@@ -128,7 +128,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
 
 
       <div className='w-full flex items-center justify-between'>
-        {!betPlaced ? (
+        {!cashbutton ? (
           <button
             type='submit'
             className='w-full bg-[rgb(2,230,3)] text-white py-2 rounded hover:bg-[rgb(8,164,8)] transition-colors mt-8 mr-2'
@@ -149,7 +149,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, betP
           <button
             type="button"  // <- Add type="button" here as well
             onClick={handleRefill}
-            disabled={betPlaced}
+            disabled={cashbutton}
             className='bg-blue-500 text-white px-4 py-3 rounded mt-8'>
             <VscDebugRestart />
           </button>

@@ -11,6 +11,7 @@ export default {
       },
       colors: {
         CardColor: 'var(--cardColor)',
+        CardFlipBg : 'var(--cardFlipBg)',
         NavBar : 'var(--navBg)',
         FormColor : 'var(--FormColor)',
         FormInput : 'var(--FormInput)',

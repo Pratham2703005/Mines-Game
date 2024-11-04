@@ -15,16 +15,16 @@ const notyf = new Notyf({
     y: 'top',
   },
 });
-
+//AP DILLO STOP
 const App = () => {
-  const [balance, setBalance] = useState(1000); // Default balance
+  const [balance, setBalance] = useState(1000);
   const [bombs, setBombs] = useState(3);
   const [cards, setCards] = useState([]);
   const [chosen, setChosen] = useState(null);
   const [betval, setBetval] = useState(10);
   const [betPlaced, setBetPlaced] = useState(false);
   const [increment, setIncrement] = useState(0);
-  const [maxBalance, setMaxBalance] = useState(1000); // Track max balance
+  const [maxBalance, setMaxBalance] = useState(1000);
   const [betCount, setBetCount] = useState(0);
   const [betWin, setBetWin] = useState(0);
   const [betZeroWin, setBetZeroWin] = useState(0);
@@ -35,6 +35,8 @@ const App = () => {
   const [currLosStreak, setCurrLosStreak] = useState(0);
   const [maxLosStreak, setMaxLosStreak] = useState(0);
   const [bombHit, setBombHit] = useState(false);
+  const [cashbutton, setcashbutton] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
 
   const [maxBetWin, setMaxBetWin] = useState(() => {
     const savedObject = localStorage.getItem('maxBetWin');
@@ -44,26 +46,26 @@ const App = () => {
     const savedObject = localStorage.getItem('maxBetLoose');
     return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, lostAmount: 0 };
   })
-  useEffect(() => {      // Disabling Inspect 
-    const handleKeyDown = (e) => {
-      if (e.key === 'F12') e.preventDefault();
-      if (e.ctrlKey && e.shiftKey && e.key === 'I') e.preventDefault();
-      if (e.ctrlKey && e.shiftKey && e.key === 'C') e.preventDefault();
-      if (e.ctrlKey && e.shiftKey && e.key === 'J') e.preventDefault();
-      if (e.ctrlKey && e.key === 'U') e.preventDefault();
-    };
+  // useEffect(() => {      // Disabling Inspect 
+  //   const handleKeyDown = (e) => {
+  //     if (e.key === 'F12') e.preventDefault();
+  //     if (e.ctrlKey && e.shiftKey && e.key === 'I') e.preventDefault();
+  //     if (e.ctrlKey && e.shiftKey && e.key === 'C') e.preventDefault();
+  //     if (e.ctrlKey && e.shiftKey && e.key === 'J') e.preventDefault();
+  //     if (e.ctrlKey && e.key === 'U') e.preventDefault();
+  //   };
 
-    const disableRightClick = (e) => {
-      e.preventDefault();
-    };
+  //   const disableRightClick = (e) => {
+  //     e.preventDefault();
+  //   };
 
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('contextmenu', disableRightClick);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('contextmenu', disableRightClick);
-    };
-  }, []);
+  //   document.addEventListener('keydown', handleKeyDown);
+  //   document.addEventListener('contextmenu', disableRightClick);
+  //   return () => {
+  //     document.removeEventListener('keydown', handleKeyDown);
+  //     document.removeEventListener('contextmenu', disableRightClick);
+  //   };
+  // }, []);
 
   useEffect(() => {       //Retrieval of data from localStorage
     const storedBalance = localStorage.getItem('balance');
@@ -102,6 +104,16 @@ const App = () => {
         }
   }, []);
 
+  const showRemainingCards = () => {
+    setGameEnded(true);
+    setCards(prevCards => 
+      prevCards.map(card => ({
+        ...card,
+        matched: card.matched || true,
+        revealed: !card.matched ? true : false
+      }))
+    );
+  };
   useEffect(() => {
     localStorage.setItem('maxBetWin', JSON.stringify(maxBetWin));
   }, [maxBetWin])
@@ -110,22 +122,24 @@ const App = () => {
     localStorage.setItem('maxBetLoose', JSON.stringify(maxBetLoose));
   }, [maxBetLoose]);
 
-  const shuffleCards = () => {   //function to shuffle cards
+  const shuffleCards = () => {
     const allcards = [];
     for (let i = 0; i < 25; i++) {
       if (i < bombs) {
-        allcards.push({ ...bombImage, id: i });
+        allcards.push({ ...bombImage, id: i, revealed: false, matched: false });
       } else {
-        allcards.push({ ...diamondImage, id: i });
+        allcards.push({ ...diamondImage, id: i, revealed: false, matched: false });
       }
     }
     allcards.sort(() => Math.random() - 0.5);
     setCards(allcards);
     setBombHit(false);
+    setGameEnded(false);
+    setChosen(null); // Reset the chosen card
   };
 
   const handleChoice = (card) => {
-    if (betPlaced && !bombHit) {
+    if (betPlaced && !bombHit && !gameEnded) {
       setChosen(card);
     }
   };
@@ -150,6 +164,7 @@ const App = () => {
                 lostAmount: totalPrice
               })
         }
+        
         setCurrLosStreak((prev) => {
           setCurrWinStreak(0);
           localStorage.setItem('CurrWinStreak', 0);
@@ -166,18 +181,27 @@ const App = () => {
         notyf.error(`YOU LOST : $${formatAmount(totalPrice)}`);
         const sound = new Audio('./assets/bombs.mp3'); // Sound file path
         sound.play();
-
+        setCards((prevCards) => {
+          return prevCards.map((card) => {
+            if (card === chosen) {
+              
+              return { ...card, matched: true };
+            } else {
+              return card;
+            }
+          });
+        });
 
         setTimeout(() => {
           setChosen(null);
           setBetPlaced(false);
-          shuffleCards();
           setMineOpen(() => {
             localStorage.setItem('MineOpen', 0);
             return 0;
           })
         }, 500);
-
+        setcashbutton(false)
+        showRemainingCards();
 
       } else {
         setCards((prevCards) => {
@@ -202,14 +226,19 @@ const App = () => {
 
   useEffect(() => {  // after bet place randomize the cards
     shuffleCards();
-  }, [betPlaced]);
+  }, []);
 
   const handleSubmit = (e) => {     // Handle Betting Value and setting reward for right selection
-    e.preventDefault();
+    
+    e.preventDefault();    
+    // shuffleCards()
+    resetCards();
+    setTimeout(shuffleCards(),300)
     if (betval > balance) {
       setBetval(parseInt(balance));
     } else {
       setBetPlaced(true);
+      setcashbutton(true);
       const tmp = balance - betval;
       setBalance(parseFloat(tmp.toFixed(2)));
       localStorage.setItem('balance', parseFloat(tmp.toFixed(2))); 
@@ -224,11 +253,15 @@ const App = () => {
         localStorage.setItem('MineOpen', 0);
         return 0;
       })
+      setTimeout(() => {
+        shuffleCards();
+      }, 10);
     }
     
   };
 
   const handleCashOut = () => {     // Handle Reward Time and resetting the position
+    showRemainingCards(); 
     const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
     let TP = turned * increment;
     TP *= parseInt(betval);
@@ -298,9 +331,9 @@ const App = () => {
 
     setTimeout(() => {
       setBetPlaced(false);
-
+      setcashbutton(false);
     }, 100)
-
+    
 
     setMineOpen(() => {
       localStorage.setItem('MineOpen', 0);
@@ -313,7 +346,17 @@ const App = () => {
 
 
   };
-
+  const resetCards = () => {
+    setCards([]);
+    setBombHit(false);
+    setGameEnded(false);
+    setChosen(null);
+    setMineOpen(() => {
+      localStorage.setItem('MineOpen', 0);
+      return 0;
+    });
+    setcashbutton(false);
+  };
   
 
   return (
@@ -330,7 +373,7 @@ const App = () => {
             balance={balance}
             betval={betval}
             bombs={bombs}
-            betPlaced={betPlaced}
+            cashbutton={cashbutton}
             handleSubmit={handleSubmit}
             setBalance={setBalance}
           />
@@ -345,6 +388,7 @@ const App = () => {
                 card={card}
                 handleChoice={handleChoice}
                 flipped={card === chosen || card.matched}
+                revealed={card.revealed && gameEnded}
               />
             ))}
           </div>
