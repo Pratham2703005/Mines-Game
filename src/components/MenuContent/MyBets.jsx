@@ -49,6 +49,7 @@ const Message = ({ data }) => {
           <Typography><strong>Bombs:</strong> {data.bombs}</Typography>
           <Typography><strong>Mines Opened:</strong> {data.mineOpen}</Typography>
           <Typography><strong>Outcome:</strong> {isWin ? 'Win' : 'Loss'}</Typography>
+          <Typography><strong>Increment:</strong> {data.increment}x</Typography>
           <Typography><strong>Date:</strong> {new Date(data.timestamp).toLocaleDateString()}</Typography>
           <Typography><strong>Time:</strong> {new Date(data.timestamp).toLocaleTimeString()}</Typography>
         </Box>
