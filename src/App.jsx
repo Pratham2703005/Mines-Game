@@ -37,14 +37,14 @@ const App = () => {
   const [bombHit, setBombHit] = useState(false);
   const [cashbutton, setcashbutton] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
-
+  const [lineval, setLineval] = useState(0);
   const [maxBetWin, setMaxBetWin] = useState(() => {
     const savedObject = localStorage.getItem('maxBetWin');
-    return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, profit: 0 };
+    return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, profit: 0, increment: 0 };
   });
   const [maxBetLoose, setMaxBetLoose] = useState(() => {
     const savedObject = localStorage.getItem('maxBetLoose');
-    return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, lostAmount: 0 };
+    return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, lostAmount: 0, increment: 0 };
   })
   // useEffect(() => {      // Disabling Inspect 
   //   const handleKeyDown = (e) => {
@@ -150,20 +150,21 @@ const App = () => {
         setBombHit(true);
         const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
         let TP = turned * increment;
+        const inc = 1 + TP;
         TP *= parseInt(betval);
         let totalPrice = parseFloat(TP.toFixed(2))
-        queueInstance.enqueue({betval, bombs, mineOpen, profit:totalPrice, win:'false',timestamp: new Date().toISOString() })
-        
         const totalCurrLoss = parseFloat((totalPrice + betval).toFixed(2));
-        const totalPrevLoss = parseFloat((maxBetLoose.lostAmount + maxBetLoose.betVal).toFixed(2));
-        if(totalCurrLoss > totalPrevLoss || (totalCurrLoss === totalPrevLoss && bombs > maxBetLoose.mines )){
+        queueInstance.enqueue({betval, bombs, mineOpen, profit:totalCurrLoss, win:'false',timestamp: new Date().toISOString(), increment: inc })
+        if(totalCurrLoss > maxBetLoose.lostAmount || (totalCurrLoss === maxBetLoose.lostAmount && bombs > maxBetLoose.mines )){
           setMaxBetLoose({
                 betVal: betval,
                 mines: bombs,
                 minesOpen: mineOpen,
-                lostAmount: totalPrice
+                lostAmount: totalCurrLoss,
+                increment: inc
               })
         }
+        
         
         setCurrLosStreak((prev) => {
           setCurrWinStreak(0);
@@ -215,11 +216,17 @@ const App = () => {
             }
           });
         });
+
         setMineOpen(prev => {
           const tmp = prev + 1;
           localStorage.setItem('MineOpen', tmp);
           return tmp;
         })
+        const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0) + 1;
+        let TP = turned * increment;
+        TP *= parseInt(betval);
+        let totalPrice = parseFloat(TP.toFixed(2))
+        setLineval(totalPrice)
       }
     }
   }, [chosen]);
@@ -264,10 +271,11 @@ const App = () => {
     showRemainingCards(); 
     const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
     let TP = turned * increment;
+    const inc = 1 + TP;
     TP *= parseInt(betval);
     let totalPrice = parseFloat(TP.toFixed(2))
 
-    queueInstance.enqueue({betval, bombs, mineOpen, profit:totalPrice, win:'true',timestamp: new Date().toISOString()  })
+    queueInstance.enqueue({betval, bombs, mineOpen, profit:totalPrice, win:'true',timestamp: new Date().toISOString() ,increment:inc })
 
     if (totalPrice !== 0) {
       setBetWin(prev => {
@@ -295,11 +303,11 @@ const App = () => {
     }
 
     if (totalPrice >= betval * 2) {
-      notyf.success(`JACKPOT : ${formatAmount(totalPrice)}`);
+      notyf.success(`JACKPOT : ${inc}x`);
     } else if (totalPrice >= betval) {
-      notyf.success(`EPIC WIN: ${formatAmount(totalPrice)}`);
+      notyf.success(`EPIC WIN: ${inc}x`);
     } else {
-      notyf.success(`YOU GAIN : ${formatAmount(totalPrice)}`);
+      notyf.success(`YOU GAIN : ${inc}x`);
     }
     const totalCurrWin = parseFloat(totalPrice + betval).toFixed(2);
     const totalPrevWin = parseFloat(maxBetWin.profit + maxBetWin.betVal).toFixed(2);
@@ -309,6 +317,7 @@ const App = () => {
         mines: bombs,
         minesOpen: mineOpen,
         profit: totalPrice,
+        increment : inc
       })
     }
     totalPrice += parseInt(betval);
@@ -351,6 +360,7 @@ const App = () => {
     setBombHit(false);
     setGameEnded(false);
     setChosen(null);
+    setLineval(0)
     setMineOpen(() => {
       localStorage.setItem('MineOpen', 0);
       return 0;
@@ -376,6 +386,7 @@ const App = () => {
             cashbutton={cashbutton}
             handleSubmit={handleSubmit}
             setBalance={setBalance}
+            Lineval = {lineval}
           />
         </div>
 

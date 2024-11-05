@@ -78,11 +78,11 @@ const StatsContent = () => {
                     </tr>
                     <tr>
                         <td className="border-b border-gray-400">Balance</td>
-                        <td className="border-b border-gray-400">{formatAmount(storedBalance) || 0}</td>
+                        <td className="border-b border-gray-400">${formatAmount(storedBalance) || 0}</td>
                     </tr>
                     <tr>
                         <td className="border-b border-gray-400">Max Balance</td>
-                        <td className="border-b border-gray-400">{formatAmount(storedMaxBalance) || 0}</td>
+                        <td className="border-b border-gray-400">${formatAmount(storedMaxBalance) || 0}</td>
                     </tr>
 
                     <tr>
@@ -138,25 +138,31 @@ const StatsContent = () => {
                 <table className="w-full table-auto border-collapse">
                     <tbody className="text-lg">
                         {/* First Row */}
-                        <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Bet Amount:</td>
-                            <td className='w-1/4 text-right'>{formatAmount(maxBetWin.betVal)}</td>
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Bet Amount:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>${formatAmount(maxBetWin.betVal)}</td>
                         </tr>
                         {/* Second Row */}
-                        <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Mines:</td>
-                            <td className='w-1/4 text-right'>{maxBetWin.mines}</td>
+                        <tr className="flex justify-between px-4  ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Mines:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>{maxBetWin.mines}</td>
                         </tr>
                         {/* Third Row */}
-                        <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Mines Opened:</td>
-                            <td className='w-1/4 text-right'>{maxBetWin.minesOpen}</td>
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Mines Opened:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>{maxBetWin.minesOpen}</td>
                         </tr>
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Increment:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>{parseFloat((maxBetWin.increment).toFixed(2))}x </td>
+                        </tr>
+                        
                         {/* Fourth Row */}
-                        <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Profit:</td>
-                            <td className='w-1/4 text-right'>{formatAmount(maxBetWin.profit)}</td>
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Profit:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'> ${formatAmount(maxBetWin.profit)}</td>
                         </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -167,24 +173,28 @@ const StatsContent = () => {
                 <table className="w-full table-auto border-collapse">
                     <tbody className="text-lg">
                         {/* First Row */}
-                        <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Bet Amount:</td>
-                            <td className='w-1/4 text-right'>{formatAmount(maxBetLoose.betVal)}</td>
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Bet Amount:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>${formatAmount(maxBetLoose.betVal)}</td>
                         </tr>
                         {/* Second Row */}
-                        <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Mines:</td>
-                            <td className='w-1/4 text-right'>{maxBetLoose.mines}</td>
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Mines:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>{maxBetLoose.mines}</td>
                         </tr>
                         {/* Third Row */}
-                        <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Mines Opened:</td>
-                            <td className='w-1/4 text-right'>{maxBetLoose.minesOpen}</td>
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Mines Opened:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>{maxBetLoose.minesOpen}</td>
+                        </tr>
+                        <tr className="flex justify-between px-4">
+                            <td className='w-2/4 text-left border-b border-gray-400'>Increment:</td>
+                            <td className='w-2/4 text-right border-b border-gray-400'>{parseFloat((maxBetLoose.increment).toFixed(2))}x</td>
                         </tr>
                         {/* Fourth Row */}
-                        <tr className="flex justify-between px-4 py-2">
-                            <td className='w-3/4 text-left'>Loss:</td>
-                            <td className='w-1/4 text-right'>{formatAmount(maxBetLoose.lostAmount)}</td>
+                        <tr className="flex justify-between px-4">
+                            <td className='w-2/4 text-left border-b border-gray-400'>Total Loss:</td>
+                            <td className='w-2/4 text-right border-b border-gray-400'>${formatAmount(maxBetLoose.lostAmount)}</td>
                         </tr>
                     </tbody>
                 </table>

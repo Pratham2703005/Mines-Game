@@ -3,6 +3,7 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { styled } from '@mui/material/styles';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import Swal from 'sweetalert2';
+import { formatAmount } from './utility/FormatAmount';
 
 const BootstrapTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} arrow classes={{ popper: className }} placement="top" />
@@ -15,7 +16,7 @@ const BootstrapTooltip = styled(({ className, ...props }) => (
   },
 }));
 
-const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, cashbutton, handleSubmit, setBalance }) => {
+const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, cashbutton, handleSubmit, setBalance ,Lineval}) => {
   const [refillCount, setRefillCount] = useState(0); // Track refills
 
   useEffect(() => {
@@ -48,14 +49,14 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, cash
       }
     });
   };
-
   return (
     <form onSubmit={handleSubmit} className='bg-FormColor rounded-lg shadow-lg flex flex-col items-start xl:min-w-[25.5rem] max-w-[332px] xl:h-[76vh] xl:ml-[310px] px-[1.25rem] py-[1.75rem]'>
       <h1 className='text-white text-2xl font-bold mb-4 mx-auto'>MINES</h1>
 
       <div className="flex justify-between items-center mb-1 w-full">
         <span className="text-gray-400">Bet Amount</span>
-        <span className="text-gray-400">$0.00</span>
+        
+        <span className="text-gray-400">${Lineval !== 0 ? formatAmount(Lineval) : "0.00"}</span>
       </div>
       <div className="flex items-stretch w-full shadow-customBox border-FormInputBtn border-[1px]">
         <div className="flex-1 relative ">
