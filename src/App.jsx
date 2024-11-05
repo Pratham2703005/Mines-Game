@@ -309,8 +309,8 @@ const App = () => {
     } else {
       notyf.success(`YOU GAIN : ${inc}x`);
     }
-    const totalCurrWin = parseFloat(totalPrice + betval).toFixed(2);
-    const totalPrevWin = parseFloat(maxBetWin.profit + maxBetWin.betVal).toFixed(2);
+    const totalCurrWin = parseFloat((totalPrice + betval).toFixed(2));
+    const totalPrevWin = parseFloat((maxBetWin.profit + maxBetWin.betVal).toFixed(2));
     if (totalCurrWin > totalPrevWin || (totalCurrWin === totalPrevWin && bombs > maxBetWin.mines)) {
       setMaxBetWin({
         betVal: betval,
