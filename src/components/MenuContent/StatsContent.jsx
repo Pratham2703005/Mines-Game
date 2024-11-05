@@ -154,7 +154,7 @@ const StatsContent = () => {
                         </tr>
                         <tr className="flex justify-between px-4 ">
                             <td className='w-3/4 text-left border-b border-gray-400'>Increment:</td>
-                            <td className='w-1/4 text-right border-b border-gray-400'>{parseFloat(maxBetWin.increment.toFixed(2))}x </td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>{maxBetWin && maxBetWin.increment !== undefined ? parseFloat(maxBetWin.increment.toFixed(2)) + "x" : "0.00x"} </td>
                         </tr>
                         
                         {/* Fourth Row */}
@@ -189,7 +189,7 @@ const StatsContent = () => {
                         </tr>
                         <tr className="flex justify-between px-4">
                             <td className='w-2/4 text-left border-b border-gray-400'>Increment:</td>
-                            <td className='w-2/4 text-right border-b border-gray-400'>{parseFloat(maxBetLoose.increment.toFixed(2))}x</td>
+                            <td className='w-2/4 text-right border-b border-gray-400'>{maxBetLoose && maxBetLoose.increment !== undefined ? parseFloat(maxBetLoose.increment.toFixed(2)) + "x" : "0.00x"}</td>
                         </tr>
                         {/* Fourth Row */}
                         <tr className="flex justify-between px-4">
