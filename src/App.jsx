@@ -154,7 +154,7 @@ const App = () => {
         TP *= parseInt(betval);
         let totalPrice = parseFloat(TP.toFixed(2))
         const totalCurrLoss = parseFloat((totalPrice + betval).toFixed(2));
-        queueInstance.enqueue({betval, bombs, mineOpen, profit:totalCurrLoss, win:'false',timestamp: new Date().toISOString(), increment: inc })
+        queueInstance.enqueue({betval, bombs, mineOpen, profit:totalCurrLoss, win:'false',timestamp: new Date().toISOString(), increment: parseFloat((inc).toFixed(2)) })
         if(totalCurrLoss > maxBetLoose.lostAmount || (totalCurrLoss === maxBetLoose.lostAmount && bombs > maxBetLoose.mines )){
           setMaxBetLoose({
                 betVal: betval,
@@ -271,7 +271,7 @@ const App = () => {
     showRemainingCards(); 
     const turned = cards.reduce((count, card) => (card.matched ? count + 1 : count), 0);
     let TP = turned * increment;
-    const inc = 1 + TP;
+    const inc = parseFloat((1 + TP).toFixed(2));
     TP *= parseInt(betval);
     let totalPrice = parseFloat(TP.toFixed(2))
 

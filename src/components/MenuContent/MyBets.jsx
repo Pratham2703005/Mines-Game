@@ -40,7 +40,7 @@ const Message = ({ data }) => {
         }}
       >
         <Typography fontWeight="bold">
-          {isWin ? `Profit : $${data.profit.toFixed(2)}` : `Loss : $${parseFloat(data.profit + data.betval).toFixed(2)}`}
+          {isWin ? `Profit : $${parseFloat(data.profit).toFixed(2)}` : `Loss : $${parseFloat(data.profit).toFixed(2)}`}
         </Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ backgroundColor: '#f5f5f5', borderRadius: '0 0 8px 8px', marginBottom: '8px' }}>
