@@ -6,6 +6,8 @@ import {
   Typography,
   Box,
   CircularProgress,
+  Alert,
+  AlertTitle,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import queueInstance from '../utility/queue';
@@ -63,31 +65,41 @@ const NotificationMessages = () => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState(null);
   const observer = useRef();
   const ITEMS_PER_PAGE = 10;
 
-  const lastMessageElementRef = useCallback(node => {
-    if (loading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPage(prevPage => prevPage + 1);
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, [loading, hasMore]);
+  const lastMessageElementRef = useCallback(
+    (node) => {
+      if (loading || error || !hasMore) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, error, hasMore]
+  );
 
   useEffect(() => {
     const fetchMessages = async () => {
-      setLoading(true);
-      const allMessages = queueInstance.getQueue().reverse(); // Reverse queue initially
-      const start = page * ITEMS_PER_PAGE;
-      const end = start + ITEMS_PER_PAGE;
-      const newMessages = allMessages.slice(start, end);
+      try {
+        setLoading(true);
+        setError(null);
+        const allMessages = queueInstance.getQueue().reverse(); // Reverse queue initially
+        const start = page * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const newMessages = allMessages.slice(start, end);
 
-      setMessages(prevMessages => [...prevMessages, ...newMessages]);
-      setHasMore(end < allMessages.length);
-      setLoading(false);
+        setMessages((prevMessages) => [...prevMessages, ...newMessages]);
+        setHasMore(end < allMessages.length);
+      } catch (err) {
+        setError('Error fetching messages. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchMessages();
@@ -99,11 +111,15 @@ const NotificationMessages = () => {
         Recent Bets
       </Typography>
 
+      {error && (
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
+      )}
+
       {messages.map((msg, index) => (
-        <div
-          key={index}
-          ref={index === messages.length - 1 ? lastMessageElementRef : null}
-        >
+        <div key={index} ref={index === messages.length - 1 ? lastMessageElementRef : null}>
           <Message data={msg} />
         </div>
       ))}
@@ -113,14 +129,18 @@ const NotificationMessages = () => {
           <CircularProgress />
         </Box>
       )}
+
+      {!loading && !error && !hasMore && (
+        <Typography variant="body1" align="center" color="text.secondary" mt={2}>
+          No more messages to display.
+        </Typography>
+      )}
     </Box>
   );
 };
 
 const MyBets = () => {
-  return (
-    <NotificationMessages />
-  );
+  return <NotificationMessages />;
 };
 
 export default MyBets;

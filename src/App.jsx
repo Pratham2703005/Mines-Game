@@ -42,6 +42,10 @@ const App = () => {
     const savedObject = localStorage.getItem('maxBetWin');
     return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, profit: 0, increment: 0 };
   });
+  const [intWin, setIntWin] = useState(() => {
+    const savedObject = localStorage.getItem('intenseWin');
+    return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, profit: 0, increment: 0 };
+  });
   const [maxBetLoose, setMaxBetLoose] = useState(() => {
     const savedObject = localStorage.getItem('maxBetLoose');
     return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, lostAmount: 0, increment: 0 };
@@ -114,13 +118,16 @@ const App = () => {
       }))
     );
   };
-  useEffect(() => {
+  useEffect(()=>{
+    localStorage.setItem('intenseWin', JSON.stringify(intWin));
+  },[intWin])
+  useEffect(()=>{
     localStorage.setItem('maxBetWin', JSON.stringify(maxBetWin));
-  }, [maxBetWin])
-
-  useEffect(() => {
+  },[maxBetWin])
+  useEffect(()=>{
     localStorage.setItem('maxBetLoose', JSON.stringify(maxBetLoose));
-  }, [maxBetLoose]);
+  },[maxBetLoose])
+
 
   const shuffleCards = () => {
     const allcards = [];
@@ -163,6 +170,7 @@ const App = () => {
                 lostAmount: totalCurrLoss,
                 increment: inc
               })
+              localStorage.setItem('maxBetLoose', JSON.stringify(maxBetLoose));
         }
         
         
@@ -319,9 +327,19 @@ const App = () => {
         profit: totalPrice,
         increment : inc
       })
+      localStorage.setItem('maxBetWin', JSON.stringify(maxBetWin));
+    }
+    if(inc > intWin.increment || (inc === intWin.increment && bombs > intWin.mines)){
+      setIntWin({
+        betVal: betval,
+        mines: bombs,
+        minesOpen: mineOpen,
+        profit: totalPrice,
+        increment : inc
+      })
     }
     totalPrice += parseInt(betval);
-
+    
     setBalance((prevBalance) => {
       const newBalance = prevBalance + totalPrice;
       const roundedBalance = parseFloat(newBalance.toFixed(2));

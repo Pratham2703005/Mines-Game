@@ -26,7 +26,10 @@ const StatsContent = () => {
         const savedObject = localStorage.getItem('maxBetLoose');
         return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, lostAmount: 0 };
     });
-
+    const [intWin, setIntWin] = useState(() => {
+        const savedObject = localStorage.getItem('intenseWin');
+        return savedObject ? JSON.parse(savedObject) : { betVal: 0, mines: 0, minesOpen: 0, profit: 0, increment: 0 };
+      });
     let losCount = storedBetCount - storedBetWins || 0;
     losCount -= storedBetZeroWins || 0;
     const winCount = storedBetWins || 0;
@@ -200,7 +203,39 @@ const StatsContent = () => {
                 </table>
             </div>
 
+            <div className="border-t pt-5">
+                <h3 className="text-xl font-bold mb-2 text-center">Highest Risk Win</h3>
+                <table className="w-full table-auto border-collapse">
+                    <tbody className="text-lg">
+                        {/* First Row */}
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Bet Amount:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>${formatAmount(intWin.betVal)}</td>
+                        </tr>
+                        {/* Second Row */}
+                        <tr className="flex justify-between px-4  ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Mines:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>{intWin.mines}</td>
+                        </tr>
+                        {/* Third Row */}
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Mines Opened:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>{intWin.minesOpen}</td>
+                        </tr>
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Increment:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'>{intWin && intWin.increment !== undefined ? parseFloat(intWin.increment.toFixed(2)) + "x" : "0.00x"} </td>
+                        </tr>
+                        
+                        {/* Fourth Row */}
+                        <tr className="flex justify-between px-4 ">
+                            <td className='w-3/4 text-left border-b border-gray-400'>Profit:</td>
+                            <td className='w-1/4 text-right border-b border-gray-400'> ${formatAmount(intWin.profit)}</td>
+                        </tr>
 
+                    </tbody>
+                </table>
+            </div>
 
         </div>
     );
