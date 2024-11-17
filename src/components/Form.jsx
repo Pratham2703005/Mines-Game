@@ -76,7 +76,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, cash
         </div>
         <button
           type="button"
-          onClick={() => setBetval(Math.floor(balance / 2))}
+          onClick={() => setBetval(Math.floor(betval / 2))}
           disabled={cashbutton}
           className="px-4 py-2 bg-FormInputBtn text-white border-r border-FormInputBorder hover:bg-FormInputBtnHover transition-colors"
         >
@@ -84,7 +84,7 @@ const Form = ({ setBetval, setBombs, handleCashOut, balance, betval, bombs, cash
         </button>
         <button
           type="button"
-          onClick={() => setBetval(Math.floor(balance))}
+          onClick={() => setBetval(Math.floor(betval*2))}
           disabled={cashbutton}
           className="px-4 py-2 bg-FormInputBtn text-white hover:bg-FormInputBtnHover transition-colors rounded"
         >
