@@ -69,6 +69,9 @@ const NotificationMessages = () => {
   const observer = useRef();
   const ITEMS_PER_PAGE = 10;
 
+  // Store the reversed queue as a ref to prevent re-reversing
+  const reversedQueueRef = useRef([]);
+
   const lastMessageElementRef = useCallback(
     (node) => {
       if (loading || error || !hasMore) return;
@@ -88,13 +91,18 @@ const NotificationMessages = () => {
       try {
         setLoading(true);
         setError(null);
-        const allMessages = queueInstance.getQueue().reverse(); // Reverse queue initially
+
+        // Reverse queue only once and store in ref
+        if (reversedQueueRef.current.length === 0) {
+          reversedQueueRef.current = queueInstance.getQueue().reverse();
+        }
+
         const start = page * ITEMS_PER_PAGE;
         const end = start + ITEMS_PER_PAGE;
-        const newMessages = allMessages.slice(start, end);
+        const newMessages = reversedQueueRef.current.slice(start, end);
 
         setMessages((prevMessages) => [...prevMessages, ...newMessages]);
-        setHasMore(end < allMessages.length);
+        setHasMore(end < reversedQueueRef.current.length);
       } catch (err) {
         setError('Error fetching messages. Please try again later.');
       } finally {
